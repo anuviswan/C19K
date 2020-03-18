@@ -9,6 +9,10 @@ import Material.IconButton exposing( iconButton, iconButtonConfig)
 import Material.Button exposing (buttonConfig, textButton)
 import Material.List as MList exposing  ( list, listConfig, listItem, listItemConfig)
 import Material.LayoutGrid as LayoutGrid exposing( layoutGrid, layoutGridCell, layoutGridInner)
+import LineChart
+import LineChart.Dots as Dots
+import LineChart.Colors as Colors
+import LineChart.Interpolation as Interpolation
 
 -- main
 main =
@@ -16,15 +20,22 @@ main =
 -- model
 type alias Model =
     {
-        userName : String
-        ,url : String
+        day : Float
+        ,count : Int
     }
+
+
+type alias Info =
+  { day : Float
+  , count : Float
+  }
+
 
 init : Model
 init =
     {
-        userName = ""
-        ,url = ""
+         day = 0
+        ,count = 0
     }
 
 -- update
@@ -44,18 +55,52 @@ update msg model =
 -- view
 view :  Model -> Html Msg
 view model =
-    div[][
+    div[]
+    [
         appBar,
-        listSelector
+        layoutGrid []
+            [ layoutGridInner []
+                [ 
+                    layoutGridCell [LayoutGrid.span1 ] [listSelector]
+                    ,layoutGridCell [] [chart model]
+                    , layoutGridCell [][]
+                ]
+          
+            ]
     ]
+    
+type alias Point =
+  { x : Float, y : Float }
 
 listSelector : Html Msg
 listSelector =
     MList.list listConfig
-        [ listItem listItemConfig [ text "Line item 1" ]
-        , listItem listItemConfig [ text "Line item 2" ]
-        , listItem listItemConfig [ text "Line item 3" ]
+        [ listItem listItemConfig [ text "Kerala" ]
+        , listItem listItemConfig [ text "Trivandrum" ]
+        , listItem listItemConfig [ text "Ernakulam" ]
         ]
+
+chart : Model -> Html Msg
+chart model =
+  LineChart.view .day .count
+    [ LineChart.line Colors.red Dots.diamond "Alice" alice
+    ]
+
+alice : List Info
+alice =
+  [ Info 1.0 14
+  , Info 2 14 
+  , Info 3 16 
+  , Info 4 16
+  , Info 5 19 
+  , Info 6 19
+  , Info 7 21
+  , Info 8 24
+  , Info 9 24
+  , Info 10 24
+  ]
+
+
 
 
 appBar : Html Msg
@@ -70,15 +115,10 @@ appBar =
                 }
                 "menu"
             , Html.span [ TopAppBar.title ]
-                [ text "Demo" ]
+                [ text "C19.Kerala" ]
             ]
         , TopAppBar.section [ TopAppBar.alignEnd ]
-            [ textButton
-                { buttonConfig
-                    | additionalAttributes =
-                        [ TopAppBar.actionItem ], onClick = Just Kerala
-                }
-                "SubText"
+            [ text "Kerala"
             ]
         ]
     ]

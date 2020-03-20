@@ -9537,33 +9537,40 @@ var $aforemny$material_components_web_elm$Material$List$listItem = F2(
 			});
 	});
 var $aforemny$material_components_web_elm$Material$List$listItemConfig = {activated: false, additionalAttributes: _List_Nil, disabled: false, href: $elm$core$Maybe$Nothing, onClick: $elm$core$Maybe$Nothing, selected: false, target: $elm$core$Maybe$Nothing};
+var $elm$core$List$repeatHelp = F3(
+	function (result, n, value) {
+		repeatHelp:
+		while (true) {
+			if (n <= 0) {
+				return result;
+			} else {
+				var $temp$result = A2($elm$core$List$cons, value, result),
+					$temp$n = n - 1,
+					$temp$value = value;
+				result = $temp$result;
+				n = $temp$n;
+				value = $temp$value;
+				continue repeatHelp;
+			}
+		}
+	});
+var $elm$core$List$repeat = F2(
+	function (n, value) {
+		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+	});
 var $author$project$Main$listSelector = A2(
 	$aforemny$material_components_web_elm$Material$List$list,
 	$aforemny$material_components_web_elm$Material$List$listConfig,
-	_List_fromArray(
-		[
-			A2(
+	A2(
+		$elm$core$List$repeat,
+		3,
+		A2(
 			$aforemny$material_components_web_elm$Material$List$listItem,
 			$aforemny$material_components_web_elm$Material$List$listItemConfig,
 			_List_fromArray(
 				[
 					$elm$html$Html$text('Kerala')
-				])),
-			A2(
-			$aforemny$material_components_web_elm$Material$List$listItem,
-			$aforemny$material_components_web_elm$Material$List$listItemConfig,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Trivandrum')
-				])),
-			A2(
-			$aforemny$material_components_web_elm$Material$List$listItem,
-			$aforemny$material_components_web_elm$Material$List$listItemConfig,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Ernakulam')
-				]))
-		]));
+				]))));
 var $aforemny$material_components_web_elm$Material$LayoutGrid$span = function (n) {
 	return $elm$html$Html$Attributes$class(
 		'mdc-layout-grid__cell--span-' + $elm$core$String$fromInt(n));

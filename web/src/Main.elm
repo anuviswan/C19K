@@ -13,6 +13,8 @@ import LineChart
 import LineChart.Dots as Dots
 import LineChart.Colors as Colors
 import LineChart.Interpolation as Interpolation
+import Parts.Districts exposing (districtDecoder)
+
 
 -- main
 main =
@@ -75,10 +77,8 @@ type alias Point =
 listSelector : Html Msg
 listSelector =
     MList.list listConfig
-        [ listItem listItemConfig [ text "Kerala" ]
-        , listItem listItemConfig [ text "Trivandrum" ]
-        , listItem listItemConfig [ text "Ernakulam" ]
-        ]
+     (List.repeat 3 <| listItem listItemConfig [ text "Kerala" ])
+     
 
 chart : Model -> Html Msg
 chart model =

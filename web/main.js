@@ -5218,6 +5218,7 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $aforemny$material_components_web_elm$Material$TopAppBar$alignEnd = $elm$html$Html$Attributes$class('mdc-top-app-bar__section--align-end');
 var $aforemny$material_components_web_elm$Material$TopAppBar$alignStart = $elm$html$Html$Attributes$class('mdc-top-app-bar__section--align-start');
+var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
 		if (maybe.$ === 'Just') {
@@ -5389,46 +5390,52 @@ var $aforemny$material_components_web_elm$Material$TopAppBar$topAppBar = F2(
 	});
 var $aforemny$material_components_web_elm$Material$TopAppBar$topAppBarConfig = {additionalAttributes: _List_Nil, dense: false, fixed: false};
 var $author$project$Main$appBar = A2(
-	$aforemny$material_components_web_elm$Material$TopAppBar$topAppBar,
-	$aforemny$material_components_web_elm$Material$TopAppBar$topAppBarConfig,
+	$elm$html$Html$div,
+	_List_Nil,
 	_List_fromArray(
 		[
 			A2(
-			$aforemny$material_components_web_elm$Material$TopAppBar$row,
-			_List_Nil,
+			$aforemny$material_components_web_elm$Material$TopAppBar$topAppBar,
+			$aforemny$material_components_web_elm$Material$TopAppBar$topAppBarConfig,
 			_List_fromArray(
 				[
 					A2(
-					$aforemny$material_components_web_elm$Material$TopAppBar$section,
-					_List_fromArray(
-						[$aforemny$material_components_web_elm$Material$TopAppBar$alignStart]),
+					$aforemny$material_components_web_elm$Material$TopAppBar$row,
+					_List_Nil,
 					_List_fromArray(
 						[
 							A2(
-							$aforemny$material_components_web_elm$Material$IconButton$iconButton,
-							_Utils_update(
-								$aforemny$material_components_web_elm$Material$IconButton$iconButtonConfig,
-								{
-									additionalAttributes: _List_fromArray(
-										[$aforemny$material_components_web_elm$Material$TopAppBar$navigationIcon])
-								}),
-							'menu'),
-							A2(
-							$elm$html$Html$span,
+							$aforemny$material_components_web_elm$Material$TopAppBar$section,
 							_List_fromArray(
-								[$aforemny$material_components_web_elm$Material$TopAppBar$title]),
+								[$aforemny$material_components_web_elm$Material$TopAppBar$alignStart]),
 							_List_fromArray(
 								[
-									$elm$html$Html$text('C19.Kerala')
+									A2(
+									$aforemny$material_components_web_elm$Material$IconButton$iconButton,
+									_Utils_update(
+										$aforemny$material_components_web_elm$Material$IconButton$iconButtonConfig,
+										{
+											additionalAttributes: _List_fromArray(
+												[$aforemny$material_components_web_elm$Material$TopAppBar$navigationIcon])
+										}),
+									'menu'),
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[$aforemny$material_components_web_elm$Material$TopAppBar$title]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('C19.Kerala')
+										]))
+								])),
+							A2(
+							$aforemny$material_components_web_elm$Material$TopAppBar$section,
+							_List_fromArray(
+								[$aforemny$material_components_web_elm$Material$TopAppBar$alignEnd]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Kerala')
 								]))
-						])),
-					A2(
-					$aforemny$material_components_web_elm$Material$TopAppBar$section,
-					_List_fromArray(
-						[$aforemny$material_components_web_elm$Material$TopAppBar$alignEnd]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Kerala')
 						]))
 				]))
 		]));
@@ -6500,7 +6507,6 @@ var $terezka$line_charts$Internal$Line$color = F3(
 		var style_ = _v2.a;
 		return style_.color(line_.color);
 	});
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $terezka$line_charts$Internal$Container$properties = F2(
 	function (f, _v0) {
 		var properties_ = _v0.a;
@@ -9267,6 +9273,99 @@ var $aforemny$material_components_web_elm$Material$LayoutGrid$layoutGridInner = 
 				attributes),
 			nodes);
 	});
+var $aforemny$material_components_web_elm$Material$List$ListItem = function (a) {
+	return {$: 'ListItem', a: a};
+};
+var $elm$html$Html$a = _VirtualDom_node('a');
+var $aforemny$material_components_web_elm$Material$List$activatedCs = function (_v0) {
+	var activated = _v0.activated;
+	return activated ? $elm$core$Maybe$Just(
+		$elm$html$Html$Attributes$class('mdc-list-item--activated')) : $elm$core$Maybe$Nothing;
+};
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $aforemny$material_components_web_elm$Material$List$ariaSelectedAttr = function (_v0) {
+	var selected = _v0.selected;
+	var activated = _v0.activated;
+	return (selected || activated) ? $elm$core$Maybe$Just(
+		A2($elm$html$Html$Attributes$attribute, 'aria-selected', 'true')) : $elm$core$Maybe$Nothing;
+};
+var $aforemny$material_components_web_elm$Material$List$disabledCs = function (_v0) {
+	var disabled = _v0.disabled;
+	return disabled ? $elm$core$Maybe$Just(
+		$elm$html$Html$Attributes$class('mdc-list-item--disabled')) : $elm$core$Maybe$Nothing;
+};
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var $aforemny$material_components_web_elm$Material$List$hrefAttr = function (_v0) {
+	var href = _v0.href;
+	return A2($elm$core$Maybe$map, $elm$html$Html$Attributes$href, href);
+};
+var $aforemny$material_components_web_elm$Material$List$listItemCs = $elm$core$Maybe$Just(
+	$elm$html$Html$Attributes$class('mdc-list-item'));
+var $aforemny$material_components_web_elm$Material$List$selectedCs = function (_v0) {
+	var selected = _v0.selected;
+	return selected ? $elm$core$Maybe$Just(
+		$elm$html$Html$Attributes$class('mdc-list-item--selected')) : $elm$core$Maybe$Nothing;
+};
+var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
+var $aforemny$material_components_web_elm$Material$List$targetAttr = function (_v0) {
+	var href = _v0.href;
+	var target = _v0.target;
+	return (!_Utils_eq(href, $elm$core$Maybe$Nothing)) ? A2($elm$core$Maybe$map, $elm$html$Html$Attributes$target, target) : $elm$core$Maybe$Nothing;
+};
+var $aforemny$material_components_web_elm$Material$List$listItem = F2(
+	function (config, nodes) {
+		return $aforemny$material_components_web_elm$Material$List$ListItem(
+			{
+				config: config,
+				node: function (attributes) {
+					return (!_Utils_eq(config.href, $elm$core$Maybe$Nothing)) ? A3(
+						$elm$html$Html$node,
+						'mdc-list-item',
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2($elm$html$Html$a, attributes, nodes)
+							])) : A3($elm$html$Html$node, 'mdc-list-item', attributes, nodes);
+				}(
+					_Utils_ap(
+						A2(
+							$elm$core$List$filterMap,
+							$elm$core$Basics$identity,
+							_List_fromArray(
+								[
+									$aforemny$material_components_web_elm$Material$List$listItemCs,
+									$aforemny$material_components_web_elm$Material$List$hrefAttr(config),
+									$aforemny$material_components_web_elm$Material$List$targetAttr(config),
+									$aforemny$material_components_web_elm$Material$List$disabledCs(config),
+									$aforemny$material_components_web_elm$Material$List$selectedCs(config),
+									$aforemny$material_components_web_elm$Material$List$activatedCs(config),
+									$aforemny$material_components_web_elm$Material$List$ariaSelectedAttr(config)
+								])),
+						config.additionalAttributes))
+			});
+	});
+var $aforemny$material_components_web_elm$Material$List$listItemConfig = {activated: false, additionalAttributes: _List_Nil, disabled: false, href: $elm$core$Maybe$Nothing, onClick: $elm$core$Maybe$Nothing, selected: false, target: $elm$core$Maybe$Nothing};
+var $author$project$Main$getListItem = function (itemText) {
+	return A2(
+		$aforemny$material_components_web_elm$Material$List$listItem,
+		$aforemny$material_components_web_elm$Material$List$listItemConfig,
+		_List_fromArray(
+			[
+				$elm$html$Html$text(itemText)
+			]));
+};
 var $aforemny$material_components_web_elm$Material$List$avatarListCs = function (_v0) {
 	var avatarList = _v0.avatarList;
 	return avatarList ? $elm$core$Maybe$Just(
@@ -9453,124 +9552,14 @@ var $aforemny$material_components_web_elm$Material$List$list = F2(
 				listItems));
 	});
 var $aforemny$material_components_web_elm$Material$List$listConfig = {additionalAttributes: _List_Nil, avatarList: false, dense: false, nonInteractive: false, twoLine: false, vertical: false, wrapFocus: false};
-var $aforemny$material_components_web_elm$Material$List$ListItem = function (a) {
-	return {$: 'ListItem', a: a};
-};
-var $elm$html$Html$a = _VirtualDom_node('a');
-var $aforemny$material_components_web_elm$Material$List$activatedCs = function (_v0) {
-	var activated = _v0.activated;
-	return activated ? $elm$core$Maybe$Just(
-		$elm$html$Html$Attributes$class('mdc-list-item--activated')) : $elm$core$Maybe$Nothing;
-};
-var $elm$virtual_dom$VirtualDom$attribute = F2(
-	function (key, value) {
-		return A2(
-			_VirtualDom_attribute,
-			_VirtualDom_noOnOrFormAction(key),
-			_VirtualDom_noJavaScriptOrHtmlUri(value));
-	});
-var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
-var $aforemny$material_components_web_elm$Material$List$ariaSelectedAttr = function (_v0) {
-	var selected = _v0.selected;
-	var activated = _v0.activated;
-	return (selected || activated) ? $elm$core$Maybe$Just(
-		A2($elm$html$Html$Attributes$attribute, 'aria-selected', 'true')) : $elm$core$Maybe$Nothing;
-};
-var $aforemny$material_components_web_elm$Material$List$disabledCs = function (_v0) {
-	var disabled = _v0.disabled;
-	return disabled ? $elm$core$Maybe$Just(
-		$elm$html$Html$Attributes$class('mdc-list-item--disabled')) : $elm$core$Maybe$Nothing;
-};
-var $elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
-};
-var $aforemny$material_components_web_elm$Material$List$hrefAttr = function (_v0) {
-	var href = _v0.href;
-	return A2($elm$core$Maybe$map, $elm$html$Html$Attributes$href, href);
-};
-var $aforemny$material_components_web_elm$Material$List$listItemCs = $elm$core$Maybe$Just(
-	$elm$html$Html$Attributes$class('mdc-list-item'));
-var $aforemny$material_components_web_elm$Material$List$selectedCs = function (_v0) {
-	var selected = _v0.selected;
-	return selected ? $elm$core$Maybe$Just(
-		$elm$html$Html$Attributes$class('mdc-list-item--selected')) : $elm$core$Maybe$Nothing;
-};
-var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
-var $aforemny$material_components_web_elm$Material$List$targetAttr = function (_v0) {
-	var href = _v0.href;
-	var target = _v0.target;
-	return (!_Utils_eq(href, $elm$core$Maybe$Nothing)) ? A2($elm$core$Maybe$map, $elm$html$Html$Attributes$target, target) : $elm$core$Maybe$Nothing;
-};
-var $aforemny$material_components_web_elm$Material$List$listItem = F2(
-	function (config, nodes) {
-		return $aforemny$material_components_web_elm$Material$List$ListItem(
-			{
-				config: config,
-				node: function (attributes) {
-					return (!_Utils_eq(config.href, $elm$core$Maybe$Nothing)) ? A3(
-						$elm$html$Html$node,
-						'mdc-list-item',
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2($elm$html$Html$a, attributes, nodes)
-							])) : A3($elm$html$Html$node, 'mdc-list-item', attributes, nodes);
-				}(
-					_Utils_ap(
-						A2(
-							$elm$core$List$filterMap,
-							$elm$core$Basics$identity,
-							_List_fromArray(
-								[
-									$aforemny$material_components_web_elm$Material$List$listItemCs,
-									$aforemny$material_components_web_elm$Material$List$hrefAttr(config),
-									$aforemny$material_components_web_elm$Material$List$targetAttr(config),
-									$aforemny$material_components_web_elm$Material$List$disabledCs(config),
-									$aforemny$material_components_web_elm$Material$List$selectedCs(config),
-									$aforemny$material_components_web_elm$Material$List$activatedCs(config),
-									$aforemny$material_components_web_elm$Material$List$ariaSelectedAttr(config)
-								])),
-						config.additionalAttributes))
-			});
-	});
-var $aforemny$material_components_web_elm$Material$List$listItemConfig = {activated: false, additionalAttributes: _List_Nil, disabled: false, href: $elm$core$Maybe$Nothing, onClick: $elm$core$Maybe$Nothing, selected: false, target: $elm$core$Maybe$Nothing};
-var $elm$core$List$repeatHelp = F3(
-	function (result, n, value) {
-		repeatHelp:
-		while (true) {
-			if (n <= 0) {
-				return result;
-			} else {
-				var $temp$result = A2($elm$core$List$cons, value, result),
-					$temp$n = n - 1,
-					$temp$value = value;
-				result = $temp$result;
-				n = $temp$n;
-				value = $temp$value;
-				continue repeatHelp;
-			}
-		}
-	});
-var $elm$core$List$repeat = F2(
-	function (n, value) {
-		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
-	});
 var $author$project$Main$listSelector = A2(
 	$aforemny$material_components_web_elm$Material$List$list,
 	$aforemny$material_components_web_elm$Material$List$listConfig,
 	A2(
-		$elm$core$List$repeat,
-		3,
-		A2(
-			$aforemny$material_components_web_elm$Material$List$listItem,
-			$aforemny$material_components_web_elm$Material$List$listItemConfig,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Kerala')
-				]))));
+		$elm$core$List$map,
+		$author$project$Main$getListItem,
+		_List_fromArray(
+			['Kerala', 'Ernakulam', 'Allepy'])));
 var $aforemny$material_components_web_elm$Material$LayoutGrid$span = function (n) {
 	return $elm$html$Html$Attributes$class(
 		'mdc-layout-grid__cell--span-' + $elm$core$String$fromInt(n));
@@ -9583,6 +9572,13 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				$author$project$Main$appBar,
+				A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('SAdasd')
+					])),
 				A2(
 				$aforemny$material_components_web_elm$Material$LayoutGrid$layoutGrid,
 				_List_Nil,

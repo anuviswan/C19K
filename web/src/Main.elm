@@ -13,7 +13,7 @@ import LineChart
 import LineChart.Dots as Dots
 import LineChart.Colors as Colors
 import LineChart.Interpolation as Interpolation
-import Parts.Districts exposing (districtDecoder)
+import Parts.Districts as Districts exposing (districtDecoder)
 
 
 -- main
@@ -59,8 +59,9 @@ view :  Model -> Html Msg
 view model =
     div[]
     [
-        appBar,
-        layoutGrid []
+        appBar
+        ,div[][text "SAdasd"]
+        ,layoutGrid []
             [ layoutGridInner []
                 [ 
                     layoutGridCell [LayoutGrid.span1 ] [listSelector]
@@ -74,11 +75,19 @@ view model =
 type alias Point =
   { x : Float, y : Float }
 
+getListItem : String -> MList.ListItem msg
+getListItem itemText =
+    listItem listItemConfig [text itemText]
+    
+
 listSelector : Html Msg
 listSelector =
     MList.list listConfig
-     (List.repeat 3 <| listItem listItemConfig [ text "Kerala" ])
+        (List.map getListItem ["Kerala","Ernakulam","Allepy"])
+     ---(List.repeat 3 <| listItem listItemConfig [ text "Kerala" ])
+
      
+
 
 chart : Model -> Html Msg
 chart model =
@@ -105,6 +114,8 @@ alice =
 
 appBar : Html Msg
 appBar =
+    div[]
+    [
     topAppBar topAppBarConfig
     [ TopAppBar.row []
         [ TopAppBar.section [ TopAppBar.alignStart ]
@@ -121,4 +132,5 @@ appBar =
             [ text "Kerala"
             ]
         ]
+    ]
     ]

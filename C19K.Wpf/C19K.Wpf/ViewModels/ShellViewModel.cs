@@ -28,7 +28,7 @@ namespace C19K.Wpf.ViewModels
         private string GetFilePath()
         {
             var appSettings = ConfigurationManager.AppSettings;
-            return appSettings["CsvPath"] ?? throw new Exception("Missing Configuration: File Path");
+            return appSettings["ActivePath"] ?? throw new Exception("Missing Configuration: File Path");
         }
 
         public PlotController ChartController { get; set; }

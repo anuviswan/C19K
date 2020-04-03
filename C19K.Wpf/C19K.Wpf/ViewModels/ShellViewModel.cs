@@ -37,13 +37,24 @@ namespace C19K.Wpf.ViewModels
         {
             TrackSeries = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) =>
             {
-                controller.AddHoverManipulator(view, new TrackerManipulator(view) { LockToInitialSeries = false, Snap = false, PointsOnly = false }, args);
-                
+                if (view.ActualModel.Series.Cast<LineSeries>().Any(x => x.Color == OxyColors.Red))
+                {
+                    var selectedSeries = view.ActualModel.Series.Cast<LineSeries>().Single(x => x.Color == OxyColors.Red);
+                    selectedSeries.Color = OxyColors.LightBlue;
+                }
+
                 var series = view.ActualModel.GetSeriesFromPoint(args.Position);
                 if (series != null)
                 {
-
+                    
+                    if(series is LineSeries linesSeries)
+                    {
+                        linesSeries.Color = OxyColors.Red;
+                       
+                    }
                 }
+
+                GraphModel.InvalidatePlot(true);
             });
 
             ChartController = new PlotController();
@@ -69,6 +80,7 @@ namespace C19K.Wpf.ViewModels
                         MarkerType = MarkerType.Circle,
                         MarkerSize = 3,
                         MarkerFill = OxyColors.LightBlue,
+                        Title = District.State.ToString(),
                     };
 
                     GraphModel.Series.Add(lineSeries);

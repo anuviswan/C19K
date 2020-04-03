@@ -1,0 +1,27 @@
+﻿<Controls:MetroWindow x:Class="C19K.Wpf.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:C19K.Wpf.Views"
+        mc:Ignorable="d"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:oxy="http://oxyplot.org/wpf"
+                      Title="ShellView" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Controls:ToggleSwitch Grid.Column="3" OnLabel="Show District Details" OffLabel="Show State Wide" IsChecked="{Binding ShowDistrictDetails}" HorizontalAlignment="Right" />
+
+        <oxy:PlotView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Model="{Binding GraphModel}" Controller="{Binding ChartController}"/>
+    </Grid>
+</Controls:MetroWindow>

@@ -25,7 +25,10 @@ getDistrictList =
     }
 
 
---districtDecoder : Decoder String -> Decoder (List String)
+--districtDecoder : Decoder String
 districtDecoder =
-  field "Districts" (field "Name" string)
+  field "Districts" (field "Name" decodeList) 
 
+--decodeList : Decoder (List String)
+decodeList =
+  field "name" string

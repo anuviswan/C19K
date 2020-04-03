@@ -59,12 +59,11 @@ view :  Model -> Html Msg
 view model =
     div[]
     [
-        appBar
-        ,div[][text "SAdasd"]
-        ,layoutGrid []
+        layoutGrid []
             [ layoutGridInner []
                 [ 
-                    layoutGridCell [LayoutGrid.span1 ] [listSelector]
+                    layoutGridCell [LayoutGrid.span12] [appBar]
+                    ,layoutGridCell [LayoutGrid.span1 ] [listSelector]
                     ,layoutGridCell [] [chart model]
                     , layoutGridCell [][]
                 ]
@@ -83,7 +82,7 @@ getListItem itemText =
 listSelector : Html Msg
 listSelector =
     MList.list listConfig
-        (List.map getListItem ["Kerala","Ernakulam","Allepy"])
+        (List.map getListItem Districts.districtDecoder)
      ---(List.repeat 3 <| listItem listItemConfig [ text "Kerala" ])
 
      

@@ -9565,20 +9565,13 @@ var $aforemny$material_components_web_elm$Material$LayoutGrid$span = function (n
 		'mdc-layout-grid__cell--span-' + $elm$core$String$fromInt(n));
 };
 var $aforemny$material_components_web_elm$Material$LayoutGrid$span1 = $aforemny$material_components_web_elm$Material$LayoutGrid$span(1);
+var $aforemny$material_components_web_elm$Material$LayoutGrid$span12 = $aforemny$material_components_web_elm$Material$LayoutGrid$span(12);
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
 			[
-				$author$project$Main$appBar,
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('SAdasd')
-					])),
 				A2(
 				$aforemny$material_components_web_elm$Material$LayoutGrid$layoutGrid,
 				_List_Nil,
@@ -9589,6 +9582,12 @@ var $author$project$Main$view = function (model) {
 						_List_Nil,
 						_List_fromArray(
 							[
+								A2(
+								$aforemny$material_components_web_elm$Material$LayoutGrid$layoutGridCell,
+								_List_fromArray(
+									[$aforemny$material_components_web_elm$Material$LayoutGrid$span12]),
+								_List_fromArray(
+									[$author$project$Main$appBar])),
 								A2(
 								$aforemny$material_components_web_elm$Material$LayoutGrid$layoutGridCell,
 								_List_fromArray(

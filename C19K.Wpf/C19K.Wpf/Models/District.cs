@@ -1,4 +1,6 @@
-﻿using System;
+﻿using C19K.Wpf.Attributes;
+using OxyPlot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

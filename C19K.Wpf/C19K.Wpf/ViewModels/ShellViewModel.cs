@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace C19K.Wpf.ViewModels
 {
@@ -20,8 +21,14 @@ namespace C19K.Wpf.ViewModels
         public ShellViewModel()
         {
             var reader = new Reader();
-            Status = reader.Read(@"E:\App Store\GitHub\anuviswan\C19K\data\Kerala.csv");
+            Status = reader.Read(GetFilePath());
             DrawGraph(Status);
+        }
+
+        private string GetFilePath()
+        {
+            var appSettings = ConfigurationManager.AppSettings;
+            return appSettings["CsvPath"] ?? throw new Exception("Missing Configuration: File Path");
         }
 
         public PlotController ChartController { get; set; }
@@ -43,21 +50,25 @@ namespace C19K.Wpf.ViewModels
             ChartController.BindMouseEnter(TrackSeries);
 
             GraphModel = new PlotModel();
-            GraphModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom });
+            GraphModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
             GraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             if (ShowDistrictDetails)
             {
-                foreach (var district in status.GroupBy(x => x.District).Where(x => x.Key != District.State).OrderBy(x => x.Key))
+                foreach (var district in status.GroupBy(x => x.District)
+                                               .Where(x => x.Key != District.State)
+                                               .OrderBy(x => x.Key))
                 {
                     var lineSeries = new LineSeries
                     {
-                        ItemsSource = district.ToList().Where(x => x.ActiveCount > 0).OrderBy(x => x.Date).Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.ActiveCount)),
-                        Color = OxyColors.LightGray,
+                        ItemsSource = district.ToList()
+                                              .Where(x => x.ActiveCount > 0)
+                                              .OrderBy(x => x.Date)
+                                              .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.ActiveCount)),
+                        Color = OxyColors.LightBlue,
                         MarkerType = MarkerType.Circle,
                         MarkerSize = 3,
                         MarkerFill = OxyColors.LightBlue,
-                        Title = district.Key.ToString(),
                     };
 
                     GraphModel.Series.Add(lineSeries);
@@ -67,8 +78,11 @@ namespace C19K.Wpf.ViewModels
             {
                 var lineSeries = new LineSeries
                 {
-                    ItemsSource = status.Where(x => x.District == District.State).Where(x => x.ActiveCount > 0).OrderBy(x => x.Date).Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.ActiveCount)),
-                    Color = OxyColors.LightGray,
+                    ItemsSource = status.Where(x => x.District == District.State)
+                                        .Where(x => x.ActiveCount > 0)
+                                        .OrderBy(x => x.Date)
+                                        .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.ActiveCount)),
+                    Color = OxyColors.LightBlue,
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 3,
                     MarkerFill = OxyColors.LightBlue,

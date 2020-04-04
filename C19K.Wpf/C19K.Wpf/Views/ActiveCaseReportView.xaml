@@ -17,7 +17,13 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <oxy:PlotView Grid.Column="0" Grid.Row="0" Model="{Binding DistrictLineChartModel}" Controller="{Binding ChartController}"/>
-        <oxy:PlotView Grid.Column="0" Grid.Row="1" Model="{Binding StateLineChartModel}" Controller="{Binding ChartController}"/>
+        <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
+            <oxy:PlotView Model="{Binding DistrictLineChartModel}" Controller="{Binding ChartController}"/>
+        </Border>
+
+        <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
+            <oxy:PlotView  Model="{Binding StateLineChartModel}" Controller="{Binding ChartController}"/>
+        </Border>
+       
     </Grid>
 </UserControl>

@@ -86,11 +86,21 @@ namespace C19K.Wpf.ViewModels
 
         private PlotModel CreateBaseModel()
         {
+            var plotModel = new PlotModel();
+            var xAxis = new DateTimeAxis 
+            { 
+                Position = AxisPosition.Bottom, 
+                StringFormat = "dd MMM",
+                CropGridlines = true,
+            };
             
 
-            var plotModel = new PlotModel();
-            plotModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
+            plotModel.Axes.Add(xAxis);
             plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            plotModel.PlotAreaBorderThickness = new OxyThickness(1, 0, 0, 1);
+            plotModel.LegendPlacement = LegendPlacement.Outside;
+            plotModel.LegendBorderThickness = 1;
+            plotModel.LegendBorder = OxyColors.Black;
             return plotModel;
         }
 

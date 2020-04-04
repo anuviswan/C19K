@@ -114,7 +114,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Attributes\ExtendedDescriptionAttribute.cs" />
+    <Compile Include="Attributes\C19ServiceAttribute.cs" />
     <Compile Include="Service\ActiveCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />
     <Compile Include="Service\CsvReader.cs" />
@@ -123,6 +123,7 @@
     <Compile Include="Service\HistoryOfCasesService.cs" />
     <Compile Include="Service\IC19Service.cs" />
     <Compile Include="Service\IReaderService.cs" />
+    <Compile Include="ViewModels\IReports.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>

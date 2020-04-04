@@ -11,9 +11,9 @@ namespace C19K.Wpf.Service
     public class GenericC19Service<T> where T : IC19Service
     {
         private T _c19Service { get; set; }
-        public GenericC19Service(T c19SErvice)
+        public GenericC19Service()
         {
-            _c19Service = c19SErvice;
+            _c19Service = IoC.Get<T>();
         }
         public IEnumerable<Status> Get()
         {

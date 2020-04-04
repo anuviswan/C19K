@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace C19K.Wpf.Attributes
 {
-    public class ExtendedDescriptionAttribute:Attribute
+    [System.AttributeUsage(System.AttributeTargets.Class ,AllowMultiple =false)]    
+    public class C19ServiceAttribute:Attribute
     {
         public string Description { get; set; }
-        public OxyColor DefaultColor { get; set; }
+        public string Title { get; set; }
 
     }
 }

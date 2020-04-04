@@ -16,17 +16,26 @@ namespace C19K.Wpf.ViewModels
     public class ShellViewModel:Screen
     {
         private bool showDistrictDetails;
-        private IEnumerable<Status> Status { get; }
+        private IEnumerable<Status> ActiveCases { get; }
+        private IEnumerable<Status> HistoryCases { get; }
 
         public ShellViewModel()
         {
-            Status = new GenericC19Service<ActiveCaseService>(new ActiveCaseService()).Get();
-            DrawGraph(Status);
+            ActiveCases = new GenericC19Service<ActiveCaseService>().Get();
+            HistoryCases = new GenericC19Service<HistoryOfCasesService>().Get();
+            DrawGraph();
         }
 
         public PlotController ChartController { get; set; }
         public static IViewCommand<OxyMouseEventArgs> TrackSeries { get; private set; }
-        public void DrawGraph(IEnumerable<Status> status)
+
+
+        public void DrawGraph()
+        {
+            DrawActiveCases(ActiveCases);
+            DrawHistoryCases(HistoryCases);
+        }
+        public void DrawActiveCases(IEnumerable<Status> status)
         {
             TrackSeries = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) =>
             {
@@ -47,15 +56,15 @@ namespace C19K.Wpf.ViewModels
                     }
                 }
 
-                GraphModel.InvalidatePlot(true);
+                ActiveCaseGraphModel.InvalidatePlot(true);
             });
 
             ChartController = new PlotController();
             ChartController.BindMouseEnter(TrackSeries);
 
-            GraphModel = new PlotModel();
-            GraphModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
-            GraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            ActiveCaseGraphModel = new PlotModel();
+            ActiveCaseGraphModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
+            ActiveCaseGraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             if (ShowDistrictDetails)
             {
@@ -76,7 +85,7 @@ namespace C19K.Wpf.ViewModels
                         Title = District.State.ToString(),
                     };
 
-                    GraphModel.Series.Add(lineSeries);
+                    ActiveCaseGraphModel.Series.Add(lineSeries);
                 }
             }
             else
@@ -93,13 +102,87 @@ namespace C19K.Wpf.ViewModels
                     MarkerFill = OxyColors.LightBlue,
                     Title = District.State.ToString(),
                 };
-                GraphModel.Series.Add(lineSeries);
+                ActiveCaseGraphModel.Series.Add(lineSeries);
             }
 
-            NotifyOfPropertyChange(nameof(GraphModel));
+            NotifyOfPropertyChange(nameof(ActiveCaseGraphModel));
         }
 
-        public PlotModel GraphModel { get; set; }
+        public void DrawHistoryCases(IEnumerable<Status> status)
+        {
+            TrackSeries = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) =>
+            {
+                if (view.ActualModel.Series.Cast<LineSeries>().Any(x => x.Color == OxyColors.Red))
+                {
+                    var selectedSeries = view.ActualModel.Series.Cast<LineSeries>().Single(x => x.Color == OxyColors.Red);
+                    selectedSeries.Color = OxyColors.LightBlue;
+                }
+
+                var series = view.ActualModel.GetSeriesFromPoint(args.Position);
+                if (series != null)
+                {
+
+                    if (series is LineSeries linesSeries)
+                    {
+                        linesSeries.Color = OxyColors.Red;
+
+                    }
+                }
+
+                HistoryCasesGraphModel.InvalidatePlot(true);
+            });
+
+            ChartController = new PlotController();
+            ChartController.BindMouseEnter(TrackSeries);
+
+            HistoryCasesGraphModel = new PlotModel();
+            HistoryCasesGraphModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
+            HistoryCasesGraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            if (ShowDistrictDetails)
+            {
+                foreach (var district in status.GroupBy(x => x.District)
+                                               .Where(x => x.Key != District.State)
+                                               .OrderBy(x => x.Key))
+                {
+                    var lineSeries = new LineSeries
+                    {
+                        ItemsSource = district.ToList()
+                                              .Where(x => x.Count > 0)
+                                              .OrderBy(x => x.Date)
+                                              .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
+                        Color = OxyColors.LightBlue,
+                        MarkerType = MarkerType.Circle,
+                        MarkerSize = 3,
+                        MarkerFill = OxyColors.LightBlue,
+                        Title = District.State.ToString(),
+                    };
+
+                    HistoryCasesGraphModel.Series.Add(lineSeries);
+                }
+            }
+            else
+            {
+                var lineSeries = new LineSeries
+                {
+                    ItemsSource = status.Where(x => x.District == District.State)
+                                        .Where(x => x.Count > 0)
+                                        .OrderBy(x => x.Date)
+                                        .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
+                    Color = OxyColors.LightBlue,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerFill = OxyColors.LightBlue,
+                    Title = District.State.ToString(),
+                };
+                HistoryCasesGraphModel.Series.Add(lineSeries);
+            }
+
+            NotifyOfPropertyChange(nameof(HistoryCasesGraphModel));
+        }
+
+        public PlotModel ActiveCaseGraphModel { get; set; }
+        public PlotModel HistoryCasesGraphModel { get; set; }
 
         public bool ShowDistrictDetails
         {
@@ -107,7 +190,7 @@ namespace C19K.Wpf.ViewModels
             set
             {
                 showDistrictDetails = value;
-                DrawGraph(Status);
+                DrawActiveCases(ActiveCases);
             }
         }
     }

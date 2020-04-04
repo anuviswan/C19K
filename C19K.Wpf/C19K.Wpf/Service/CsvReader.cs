@@ -25,7 +25,11 @@ namespace C19K.Wpf.Service
                 var dataRead = csv.GetRecords<dynamic>().ToList();
                 foreach(var item in dataRead)
                 {
+                    if (string.IsNullOrWhiteSpace(item.Date))
+                        continue;
+
                     var valueDictionary = new RouteValueDictionary(item);
+                    
                     result.AddRange(Enum.GetNames(typeof(District)).Select(x => new Status
                     {
                         District = (District)Enum.Parse(typeof(District), x),

@@ -33,7 +33,6 @@ namespace C19K.Wpf.Service
                         District = groupedDistrict.Key,
                         Date = current.Date,
                         Count = currentCount,
-                        DailyCount = current.Count
                     };
                 }
             }

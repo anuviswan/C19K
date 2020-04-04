@@ -91,6 +91,7 @@ namespace C19K.Wpf.ViewModels
 
         private PlotModel CreateDailyColumnGraph(IEnumerable<Status> status)
         {
+            
             var model = new PlotModel()
             {
                 LegendPlacement = LegendPlacement.Outside,
@@ -102,11 +103,28 @@ namespace C19K.Wpf.ViewModels
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
             categoryAxis.Labels.AddRange(status.Where(x => x.District == District.State).OrderBy(x => x.Date).Select(x => x.Date.ToString("dd-MMM")));
             ColumnSeries s1 = new ColumnSeries();
-            s1.Items.AddRange(status.Where(x => x.District == District.State).OrderBy(x => x.Date).Select(x => new ColumnItem( x.DailyCount)));
+            var dailyCount = status.Where(x => x.District == District.State).OrderBy(x => x.Date).Select(x => x.Count);
+
+            s1.Items.AddRange(dailyCount.Zip(dailyCount.Skip(1),(x,y)=> y-x).Select(x=> new ColumnItem(x)));
+
+            var a =  status.Where(x => x.District == District.State).OrderBy(x => x.Date).Select(x => x);
+            DailyStatus = a.Zip(a.Skip(1), (x, y) => new Status { District = x.District, Count = y.Count - x.Count, Date = x.Date }).ToList();
+            Count = 3;
+            NotifyOfPropertyChange(nameof(Count));
+            NotifyOfPropertyChange(nameof(DailyStatus));
+            s1.LabelFormatString = "{0}";
+            s1.ToolTip = "{0}";
             model.Axes.Add(categoryAxis);
             model.Series.Add(s1);
             return model;
+
         }
+
+
+        public int Count { get; set; }
+
+
+        public List<Status> DailyStatus { get; set; } = new List<Status>();
         private PlotModel CreateBaseLineSeriesPlotModel()
         {
             var plotModel = new PlotModel();

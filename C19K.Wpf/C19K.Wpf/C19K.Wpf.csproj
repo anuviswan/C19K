@@ -143,6 +143,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes\ReportDescriptionAttribute.cs" />
+    <Compile Include="CustomControls\SingleColumnSeries.xaml.cs">
+      <DependentUpon>SingleColumnSeries.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Service\ActiveCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />
     <Compile Include="Service\CsvReader.cs" />
@@ -198,6 +201,10 @@
     <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CustomControls\SingleColumnSeries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ActiveCaseReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

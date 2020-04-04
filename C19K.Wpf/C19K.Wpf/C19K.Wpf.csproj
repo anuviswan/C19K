@@ -114,7 +114,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Attributes\C19ServiceAttribute.cs" />
+    <Compile Include="Attributes\ReportDescriptionAttribute.cs" />
     <Compile Include="Service\ActiveCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />
     <Compile Include="Service\CsvReader.cs" />

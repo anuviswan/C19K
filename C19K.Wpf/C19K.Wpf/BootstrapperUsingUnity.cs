@@ -32,10 +32,10 @@ namespace C19K.Wpf
             ////Services
             _unityContainer.RegisterInstance<IReaderService>(new CsvReader());
             _unityContainer.RegisterInstance<ActiveCaseService>(new ActiveCaseService());
+            _unityContainer.RegisterInstance<HistoryOfCasesService>(new HistoryOfCasesService());
 
             //View Models
-            _unityContainer.RegisterInstance<ShellViewModel>(new ShellViewModel());
-
+            _unityContainer.RegisterType<ShellViewModel, ShellViewModel>();
 
         }
 

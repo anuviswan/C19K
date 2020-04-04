@@ -1,4 +1,5 @@
-﻿using C19K.Wpf.Models;
+﻿using C19K.Wpf.Attributes;
+using C19K.Wpf.Models;
 using C19K.Wpf.Service;
 using Caliburn.Micro;
 using OxyPlot;
@@ -12,16 +13,22 @@ using System.Threading.Tasks;
 
 namespace C19K.Wpf.ViewModels
 {
-    public class ActiveCaseReportViewModel:Screen,IReportViewModel
+    [ReportDescriptionAttribute(Description = "Active Cases In Kerala", Title = "Active Cases")]
+    public class ActiveCaseReportViewModel:Screen,IReportViewModel<ActiveCaseService>
     {
         private IEnumerable<Status> ActiveCases { get; }
         public ActiveCaseReportViewModel()
         {
             DisplayName = "Active Cases";
-            //ActiveCases = new GenericC19Service<ActiveCaseService>().Get();
-            //DrawGraph(ActiveCases);
+            ActiveCases = C19Service.Get();
+            DrawGraph(ActiveCases);
         }
 
+        public Task Reload()
+        {
+            DrawGraph(ActiveCases);
+            return Task.CompletedTask;
+        }
         public void DrawGraph(IEnumerable<Status> status)
         {
             TrackSeries = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) =>
@@ -108,6 +115,8 @@ namespace C19K.Wpf.ViewModels
                 DrawGraph(ActiveCases);
             }
         }
+
+        public GenericC19Service<ActiveCaseService> C19Service { get; set; } = new GenericC19Service<ActiveCaseService>();
     }
 
    

@@ -9,7 +9,6 @@ using C19K.Wpf.Models;
 
 namespace C19K.Wpf.Service
 {
-    [C19ServiceAttribute(Description = "History Of Cases In Kerala", Title = "History")]
     public class HistoryOfCasesService : IC19Service
     {
         public string FilePath

@@ -11,6 +11,5 @@
     <Grid>
         <TabControl x:Name="Items">
         </TabControl>
-        <!--<ContentControl x:Name="ActiveItem"/>-->
     </Grid>
 </Controls:MetroWindow>

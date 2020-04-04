@@ -123,8 +123,16 @@
     <Compile Include="Service\HistoryOfCasesService.cs" />
     <Compile Include="Service\IC19Service.cs" />
     <Compile Include="Service\IReaderService.cs" />
-    <Compile Include="ViewModels\IReports.cs" />
+    <Compile Include="ViewModels\ActiveCaseReportViewModel.cs" />
+    <Compile Include="ViewModels\HistoryCaseReportViewModel.cs" />
+    <Compile Include="ViewModels\IReportViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="Views\ActiveCaseReportView.xaml.cs">
+      <DependentUpon>ActiveCaseReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryCaseReportView.xaml.cs">
+      <DependentUpon>HistoryCaseReportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -162,6 +170,14 @@
     <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ActiveCaseReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HistoryCaseReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

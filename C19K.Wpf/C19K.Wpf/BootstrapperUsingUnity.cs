@@ -34,7 +34,7 @@ namespace C19K.Wpf
             _unityContainer.RegisterInstance<ActiveCaseService>(new ActiveCaseService());
 
             //View Models
-            _unityContainer.RegisterType<ShellViewModel, ShellViewModel>();
+            _unityContainer.RegisterInstance<ShellViewModel>(new ShellViewModel());
 
 
         }

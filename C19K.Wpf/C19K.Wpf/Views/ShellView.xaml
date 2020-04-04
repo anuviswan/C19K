@@ -8,44 +8,9 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:oxy="http://oxyplot.org/wpf"
                       Title="ShellView" Height="450" Width="800">
-    <Controls:MetroAnimatedTabControl>
-        <Controls:MetroTabItem Header="Active Cases">
-            <Grid>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <Controls:ToggleSwitch Grid.Column="3" OnLabel="Show District Details" OffLabel="Show State Wide" IsChecked="{Binding ShowDistrictDetails}" HorizontalAlignment="Right" />
-
-                <oxy:PlotView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Model="{Binding ActiveCaseGraphModel}" Controller="{Binding ChartController}"/>
-            </Grid>
-        </Controls:MetroTabItem>
-        <Controls:MetroTabItem Header="History">
-            <Grid>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <Controls:ToggleSwitch Grid.Column="3" OnLabel="Show District Details" OffLabel="Show State Wide" IsChecked="{Binding ShowDistrictDetails}" HorizontalAlignment="Right" />
-                <oxy:PlotView Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Model="{Binding HistoryCasesGraphModel}" Controller="{Binding ChartController}"/>
-            </Grid>
-        </Controls:MetroTabItem>
-    </Controls:MetroAnimatedTabControl>
-    
+    <Grid>
+        <TabControl x:Name="Items">
+        </TabControl>
+        <!--<ContentControl x:Name="ActiveItem"/>-->
+    </Grid>
 </Controls:MetroWindow>

@@ -13,7 +13,7 @@ using C19K.Wpf.Service;
 
 namespace C19K.Wpf.ViewModels
 {
-    public class ShellViewModel:Screen
+    public class ShellViewModel : Conductor<IScreen>.Collection.OneActive
     {
         private bool showDistrictDetails;
         private IEnumerable<Status> ActiveCases { get; }
@@ -21,9 +21,9 @@ namespace C19K.Wpf.ViewModels
 
         public ShellViewModel()
         {
-            ActiveCases = new GenericC19Service<ActiveCaseService>().Get();
-            HistoryCases = new GenericC19Service<HistoryOfCasesService>().Get();
-            DrawGraph();
+            Items.Add(new HistoryCaseReportViewModel());
+            Items.Add(new ActiveCaseReportViewModel());
+            ActivateItem(Items[0]);
         }
 
         public PlotController ChartController { get; set; }
@@ -184,6 +184,7 @@ namespace C19K.Wpf.ViewModels
         public PlotModel ActiveCaseGraphModel { get; set; }
         public PlotModel HistoryCasesGraphModel { get; set; }
 
+        public List<IReportViewModel> ViewModelCollection { get; set; } = new List<IReportViewModel>();
         public bool ShowDistrictDetails
         {
             get => showDistrictDetails;

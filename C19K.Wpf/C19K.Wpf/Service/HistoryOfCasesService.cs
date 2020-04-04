@@ -22,7 +22,20 @@ namespace C19K.Wpf.Service
 
         public IEnumerable<Status> RetrieveInformation(IEnumerable<Status> statuses)
         {
-            return statuses;
+            foreach (var groupedDistrict in statuses.GroupBy(x=>x.District))
+            {
+                var currentCount = 0;
+                foreach (var current in groupedDistrict.ToList().OrderBy(x=>x.Date))
+                {
+                    currentCount += current.Count;
+                    yield return new Status
+                    {
+                        District = groupedDistrict.Key,
+                        Date = current.Date,
+                        Count = currentCount
+                    };
+                }
+            }
         }
     }
 }

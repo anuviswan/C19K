@@ -8,6 +8,7 @@ using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +35,13 @@ namespace C19K.Wpf.ViewModels
         private PlotModel CreateDistrictLineChartModel(IEnumerable<Status> status)
         {
             var plotModel = CreateBaseModel();
+            var colors = typeof(OxyColors)
+                             .GetFields(BindingFlags.Static | BindingFlags.Public)
+                             .Where(f => f.FieldType == typeof(OxyColor))
+                             .Select(f => f.GetValue(null))
+                             .Cast<OxyColor>()
+                             .ToList();
+
             foreach (var district in status.GroupBy(x => x.District)
                                            .Where(x => x.Key != District.State)
                                            .OrderBy(x => x.Key))
@@ -44,10 +52,10 @@ namespace C19K.Wpf.ViewModels
                                           .Where(x => x.Count > 0)
                                           .OrderBy(x => x.Date)
                                           .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
-                    Color = OxyColors.LightBlue,
+                    Color = colors[(int)district.Key],
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 3,
-                    MarkerFill = OxyColors.LightBlue,
+                    MarkerFill = colors[(int)district.Key],
                     Title = district.Key.ToString(),
                 };
 

@@ -115,11 +115,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes\ExtendedDescriptionAttribute.cs" />
-    <Compile Include="Data\Reader.cs" />
+    <Compile Include="Service\ActiveCaseService.cs" />
+    <Compile Include="Service\GenericC19Service.cs" />
+    <Compile Include="Service\CsvReader.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Status.cs" />
+    <Compile Include="Service\HistoryOfCasesService.cs" />
     <Compile Include="Service\IC19Service.cs" />
-    <Compile Include="Service\IReader.cs" />
+    <Compile Include="Service\IReaderService.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -154,7 +157,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>

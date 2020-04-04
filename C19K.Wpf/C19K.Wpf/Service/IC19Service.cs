@@ -9,6 +9,7 @@ namespace C19K.Wpf.Service
 {
     public interface IC19Service
     {
-        IEnumerable<Status> Get(string filePath);
+        IEnumerable<Status> RetrieveInformation(IEnumerable<Status> statuses);
+        string FilePath { get; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace C19K.Wpf.Service
 {
-    public interface IReader
+    public interface IReaderService
     {
         IEnumerable<Status> Read(string filePath);
     }

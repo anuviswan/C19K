@@ -1,5 +1,4 @@
-﻿using C19K.Wpf.Data;
-using C19K.Wpf.Models;
+﻿using C19K.Wpf.Models;
 using Caliburn.Micro;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using C19K.Wpf.Service;
 
 namespace C19K.Wpf.ViewModels
 {
@@ -20,15 +20,8 @@ namespace C19K.Wpf.ViewModels
 
         public ShellViewModel()
         {
-            var reader = new Reader();
-            Status = reader.Read(GetFilePath());
+            Status = new GenericC19Service<ActiveCaseService>(new ActiveCaseService()).Get();
             DrawGraph(Status);
-        }
-
-        private string GetFilePath()
-        {
-            var appSettings = ConfigurationManager.AppSettings;
-            return appSettings["ActivePath"] ?? throw new Exception("Missing Configuration: File Path");
         }
 
         public PlotController ChartController { get; set; }
@@ -73,9 +66,9 @@ namespace C19K.Wpf.ViewModels
                     var lineSeries = new LineSeries
                     {
                         ItemsSource = district.ToList()
-                                              .Where(x => x.ActiveCount > 0)
+                                              .Where(x => x.Count > 0)
                                               .OrderBy(x => x.Date)
-                                              .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.ActiveCount)),
+                                              .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
                         Color = OxyColors.LightBlue,
                         MarkerType = MarkerType.Circle,
                         MarkerSize = 3,
@@ -91,9 +84,9 @@ namespace C19K.Wpf.ViewModels
                 var lineSeries = new LineSeries
                 {
                     ItemsSource = status.Where(x => x.District == District.State)
-                                        .Where(x => x.ActiveCount > 0)
+                                        .Where(x => x.Count > 0)
                                         .OrderBy(x => x.Date)
-                                        .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.ActiveCount)),
+                                        .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
                     Color = OxyColors.LightBlue,
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 3,

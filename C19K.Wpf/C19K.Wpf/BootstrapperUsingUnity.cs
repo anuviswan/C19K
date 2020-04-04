@@ -1,4 +1,5 @@
-﻿using C19K.Wpf.ViewModels;
+﻿using C19K.Wpf.Service;
+using C19K.Wpf.ViewModels;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,14 @@ namespace C19K.Wpf
             _unityContainer.RegisterInstance<IWindowManager>(new WindowManager());
             _unityContainer.RegisterInstance<IEventAggregator>(new EventAggregator(), new ContainerControlledLifetimeManager());
 
+            ////Services
+            _unityContainer.RegisterInstance<IReaderService>(new CsvReader());
+            _unityContainer.RegisterInstance<ActiveCaseService>(new ActiveCaseService());
+
             //View Models
-            _unityContainer.RegisterInstance<ShellViewModel>(new ShellViewModel());
+            _unityContainer.RegisterType<ShellViewModel, ShellViewModel>();
+
+
         }
 
         protected override void BuildUp(object instance)

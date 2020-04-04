@@ -9,6 +9,6 @@ namespace C19K.Wpf.Service
 {
     public interface IReaderService
     {
-        IEnumerable<Status> Read(string filePath);
+        Task<IEnumerable<Status>> Read(string filePath);
     }
 }

@@ -6,10 +6,9 @@
         xmlns:local="clr-namespace:C19K.Wpf.Views"
         mc:Ignorable="d"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      xmlns:oxy="http://oxyplot.org/wpf"
-                      Title="ShellView" Height="450" Width="800">
+                      xmlns:oxy="http://oxyplot.org/wpf" 
+                      Title="ShellView" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
-        <TabControl x:Name="Items">
-        </TabControl>
+        <TabControl x:Name="Items"/>
     </Grid>
 </Controls:MetroWindow>

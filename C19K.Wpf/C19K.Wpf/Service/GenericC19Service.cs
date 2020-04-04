@@ -15,11 +15,11 @@ namespace C19K.Wpf.Service
         {
             _c19Service = IoC.Get<T>();
         }
-        public IEnumerable<Status> Get()
+        public async Task<IEnumerable<Status>> Get()
         {
             var fileReader = IoC.Get<IReaderService>();
-            var data = fileReader.Read(_c19Service.FilePath);
-            return _c19Service.RetrieveInformation(data);
+            var data = await fileReader.Read(_c19Service.FilePath);
+            return  _c19Service.RetrieveInformation(data);
         }
     }
 }

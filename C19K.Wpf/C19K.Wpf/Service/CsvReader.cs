@@ -1,5 +1,6 @@
 ﻿using C19K.Wpf.Models;
 using CsvHelper;
+using LazyCache;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -14,7 +15,9 @@ namespace C19K.Wpf.Service
 {
     public class CsvReader:IReaderService
     {
-       public IEnumerable<Status> Read(string filePath)
+        private IAppCache cache = new CachingService();
+
+        private Task<IEnumerable<Status>> ReadInternal(string filePath)
         {
             var result = new List<Status>();
             CultureInfo provider = CultureInfo.InvariantCulture;
@@ -23,22 +26,26 @@ namespace C19K.Wpf.Service
             using (var csv = new CsvHelper.CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 var dataRead = csv.GetRecords<dynamic>().ToList();
-                foreach(var item in dataRead)
+                foreach (var item in dataRead)
                 {
                     if (string.IsNullOrWhiteSpace(item.Date))
                         continue;
 
                     var valueDictionary = new RouteValueDictionary(item);
-                    
+
                     result.AddRange(Enum.GetNames(typeof(District)).Select(x => new Status
                     {
                         District = (District)Enum.Parse(typeof(District), x),
                         Date = System.DateTime.ParseExact(item.Date, "dd-MM-yyyy", provider),
                         Count = int.TryParse((string)valueDictionary[x], out var value) ? value : 0
-                    })); 
+                    }));
                 }
-                return result;
+                return Task.FromResult(result.AsEnumerable());
             }
+        }
+        public async Task<IEnumerable<Status>> Read(string filePath)
+        {
+            return await cache.GetOrAddAsync<IEnumerable<Status>>(filePath, ()=> ReadInternal(filePath));
         }
     }
 

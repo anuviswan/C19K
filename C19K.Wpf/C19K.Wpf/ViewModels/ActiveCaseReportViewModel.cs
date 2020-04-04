@@ -16,20 +16,73 @@ namespace C19K.Wpf.ViewModels
     [ReportDescriptionAttribute(Description = "Active Cases In Kerala", Title = "Active Cases")]
     public class ActiveCaseReportViewModel:Screen,IReportViewModel<ActiveCaseService>
     {
-        private IEnumerable<Status> ActiveCases { get; }
         public ActiveCaseReportViewModel()
         {
             DisplayName = "Active Cases";
-            ActiveCases = C19Service.Get();
-            DrawGraph(ActiveCases);
         }
 
-        public Task Reload()
+        protected override async void OnViewAttached(object view, object context)
         {
-            DrawGraph(ActiveCases);
-            return Task.CompletedTask;
+            await Reload();
+        }
+        public async Task Reload()
+        {
+            var statusRead = await C19Service.Get();
+            DrawGraph(statusRead);
+        }
+
+        private PlotModel CreateDistrictLineChartModel(IEnumerable<Status> status)
+        {
+            var plotModel = CreateBaseModel();
+            foreach (var district in status.GroupBy(x => x.District)
+                                           .Where(x => x.Key != District.State)
+                                           .OrderBy(x => x.Key))
+            {
+                var lineSeries = new LineSeries
+                {
+                    ItemsSource = district.ToList()
+                                          .Where(x => x.Count > 0)
+                                          .OrderBy(x => x.Date)
+                                          .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
+                    Color = OxyColors.LightBlue,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerFill = OxyColors.LightBlue,
+                    Title = district.Key.ToString(),
+                };
+
+                plotModel.Series.Add(lineSeries);
+            }
+            return plotModel;
+        }
+
+        private PlotModel CreateStateLineChartModel(IEnumerable<Status> status)
+        {
+            var plotModel = CreateBaseModel();
+            var lineSeries = new LineSeries
+            {
+                ItemsSource = status.Where(x => x.District == District.State)
+                                                    .Where(x => x.Count > 0)
+                                                    .OrderBy(x => x.Date)
+                                                    .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
+                Color = OxyColors.LightBlue,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 3,
+                MarkerFill = OxyColors.LightBlue,
+                Title = District.State.ToString(),
+            };
+            plotModel.Series.Add(lineSeries);
+            return plotModel;
         }
         public void DrawGraph(IEnumerable<Status> status)
+        {
+            DistrictLineChartModel = CreateDistrictLineChartModel(status);
+            StateLineChartModel = CreateStateLineChartModel(status);
+            NotifyOfPropertyChange(nameof(DistrictLineChartModel));
+            NotifyOfPropertyChange(nameof(StateLineChartModel));
+        }
+
+        private PlotModel CreateBaseModel()
         {
             TrackSeries = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) =>
             {
@@ -50,71 +103,23 @@ namespace C19K.Wpf.ViewModels
                     }
                 }
 
-                ActiveCaseGraphModel.InvalidatePlot(true);
+                DistrictLineChartModel.InvalidatePlot(true);
             });
 
             ChartController = new PlotController();
             ChartController.BindMouseEnter(TrackSeries);
 
-            ActiveCaseGraphModel = new PlotModel();
-            ActiveCaseGraphModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
-            ActiveCaseGraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-
-            if (ShowDistrictDetails)
-            {
-                foreach (var district in status.GroupBy(x => x.District)
-                                               .Where(x => x.Key != District.State)
-                                               .OrderBy(x => x.Key))
-                {
-                    var lineSeries = new LineSeries
-                    {
-                        ItemsSource = district.ToList()
-                                              .Where(x => x.Count > 0)
-                                              .OrderBy(x => x.Date)
-                                              .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
-                        Color = OxyColors.LightBlue,
-                        MarkerType = MarkerType.Circle,
-                        MarkerSize = 3,
-                        MarkerFill = OxyColors.LightBlue,
-                        Title = District.State.ToString(),
-                    };
-
-                    ActiveCaseGraphModel.Series.Add(lineSeries);
-                }
-            }
-            else
-            {
-                var lineSeries = new LineSeries
-                {
-                    ItemsSource = status.Where(x => x.District == District.State)
-                                        .Where(x => x.Count > 0)
-                                        .OrderBy(x => x.Date)
-                                        .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
-                    Color = OxyColors.LightBlue,
-                    MarkerType = MarkerType.Circle,
-                    MarkerSize = 3,
-                    MarkerFill = OxyColors.LightBlue,
-                    Title = District.State.ToString(),
-                };
-                ActiveCaseGraphModel.Series.Add(lineSeries);
-            }
-
-            NotifyOfPropertyChange(nameof(ActiveCaseGraphModel));
+            var plotModel = new PlotModel();
+            plotModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return plotModel;
         }
 
         public PlotController ChartController { get; set; }
         public static IViewCommand<OxyMouseEventArgs> TrackSeries { get; private set; }
-        public PlotModel ActiveCaseGraphModel { get; set; }
-        private bool showDistrictDetails;
-        public bool ShowDistrictDetails
-        {
-            get => showDistrictDetails;
-            set
-            {
-                showDistrictDetails = value;
-                DrawGraph(ActiveCases);
-            }
-        }
+        public PlotModel DistrictLineChartModel { get; set; }
+
+        public PlotModel StateLineChartModel { get; set; }
 
         public GenericC19Service<ActiveCaseService> C19Service { get; set; } = new GenericC19Service<ActiveCaseService>();
     }

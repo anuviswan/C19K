@@ -11,6 +11,7 @@ namespace C19K.Wpf.Models
         public DateTime Date { get; set; }
         public District District { get; set; }
         public int Count { get; set; }
+        public int DailyCount { get; set; }
     }
 
 }

@@ -35,7 +35,7 @@ namespace C19K.Wpf.ViewModels
 
         private PlotModel CreateDistrictLineChartModel(IEnumerable<Status> status)
         {
-            var plotModel = CreateBaseModel();
+            var plotModel = CreateBaseLineSeriesPlotModel();
 
             foreach (var district in status.GroupBy(x => x.District)
                                            .Where(x => x.Key != District.State)
@@ -61,7 +61,7 @@ namespace C19K.Wpf.ViewModels
 
         private PlotModel CreateStateLineChartModel(IEnumerable<Status> status)
         {
-            var plotModel = CreateBaseModel();
+            var plotModel = CreateBaseLineSeriesPlotModel();
             var lineSeries = new LineSeries
             {
                 ItemsSource = status.Where(x => x.District == District.State)
@@ -82,12 +82,32 @@ namespace C19K.Wpf.ViewModels
             CreatePlotController();
             DistrictLineChartModel = CreateDistrictLineChartModel(status);
             StateLineChartModel = CreateStateLineChartModel(status);
+            DailyBarChartModel = CreateDailyColumnGraph(status);
             NotifyOfPropertyChange(nameof(ChartController));
             NotifyOfPropertyChange(nameof(DistrictLineChartModel));
             NotifyOfPropertyChange(nameof(StateLineChartModel));
+            NotifyOfPropertyChange(nameof(DailyBarChartModel));
         }
 
-        private PlotModel CreateBaseModel()
+        private PlotModel CreateDailyColumnGraph(IEnumerable<Status> status)
+        {
+            var model = new PlotModel()
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                LegendPosition = LegendPosition.BottomCenter,
+                LegendOrientation = LegendOrientation.Horizontal,
+                LegendBorderThickness = 0
+            };
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.AddRange(status.Where(x => x.District == District.State).OrderBy(x => x.Date).Select(x => x.Date.ToString("dd-MMM")));
+            ColumnSeries s1 = new ColumnSeries();
+            s1.Items.AddRange(status.Where(x => x.District == District.State).OrderBy(x => x.Date).Select(x => new ColumnItem( x.DailyCount)));
+            model.Axes.Add(categoryAxis);
+            model.Series.Add(s1);
+            return model;
+        }
+        private PlotModel CreateBaseLineSeriesPlotModel()
         {
             var plotModel = new PlotModel();
 
@@ -150,6 +170,8 @@ namespace C19K.Wpf.ViewModels
         public PlotModel DistrictLineChartModel { get; set; }
 
         public PlotModel StateLineChartModel { get; set; }
+
+        public PlotModel DailyBarChartModel { get; set; }
 
         public GenericC19Service<HistoryOfCasesService> C19Service { get; set; } = new GenericC19Service<HistoryOfCasesService>();
     }

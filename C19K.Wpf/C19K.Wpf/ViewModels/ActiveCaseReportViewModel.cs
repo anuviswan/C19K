@@ -76,13 +76,25 @@ namespace C19K.Wpf.ViewModels
         }
         public void DrawGraph(IEnumerable<Status> status)
         {
+            CreatePlotController();
             DistrictLineChartModel = CreateDistrictLineChartModel(status);
             StateLineChartModel = CreateStateLineChartModel(status);
+            NotifyOfPropertyChange(nameof(ChartController));
             NotifyOfPropertyChange(nameof(DistrictLineChartModel));
             NotifyOfPropertyChange(nameof(StateLineChartModel));
         }
 
         private PlotModel CreateBaseModel()
+        {
+            
+
+            var plotModel = new PlotModel();
+            plotModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            return plotModel;
+        }
+
+        private void CreatePlotController()
         {
             TrackSeries = new DelegatePlotCommand<OxyMouseEventArgs>((view, controller, args) =>
             {
@@ -103,16 +115,11 @@ namespace C19K.Wpf.ViewModels
                     }
                 }
 
-                DistrictLineChartModel.InvalidatePlot(true);
+                view.ActualModel.InvalidatePlot(true);
             });
 
             ChartController = new PlotController();
             ChartController.BindMouseEnter(TrackSeries);
-
-            var plotModel = new PlotModel();
-            plotModel.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, StringFormat = "dd MMM" });
-            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
-            return plotModel;
         }
 
         public PlotController ChartController { get; set; }

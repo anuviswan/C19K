@@ -28,11 +28,11 @@
         </Border>
 
         <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:SingleColumnSeries DataCollection="{Binding Path=DataContext.DailyStatus, Mode=TwoWay, ElementName=MyControl}" MyProperty="{Binding DataContext.Count,Mode=TwoWay,ElementName=MyControl}" />
+            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.DailyStatus, Mode=TwoWay, ElementName=MyControl}" />
         </Border>
 
         <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <oxy:PlotView  Model="{Binding StateLineChartModel}" Controller="{Binding ChartController}"/>
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWiseHistoricalData, Mode=TwoWay, ElementName=MyControl}" />
         </Border>
 
     </Grid>

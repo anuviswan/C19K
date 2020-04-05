@@ -143,8 +143,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes\ReportDescriptionAttribute.cs" />
-    <Compile Include="CustomControls\SingleColumnSeries.xaml.cs">
-      <DependentUpon>SingleColumnSeries.xaml</DependentUpon>
+    <Compile Include="CustomControls\LineSeriesChart.xaml.cs">
+      <DependentUpon>LineSeriesChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\SingleColumnSeriesChart.xaml.cs">
+      <DependentUpon>SingleColumnSeriesChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Service\ActiveCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />
@@ -201,7 +204,11 @@
     <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CustomControls\SingleColumnSeries.xaml">
+    <Page Include="CustomControls\LineSeriesChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\SingleColumnSeriesChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

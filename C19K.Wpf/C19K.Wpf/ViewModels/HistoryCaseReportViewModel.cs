@@ -60,6 +60,7 @@ namespace C19K.Wpf.ViewModels
             return plotModel;
         }
 
+        public List<CaseStatus> StateWiseHistoricalData { get; set; }
         private PlotModel CreateStateLineChartModel(IEnumerable<CaseStatus> status)
         {
             var plotModel = CreateBaseLineSeriesPlotModel();
@@ -86,7 +87,14 @@ namespace C19K.Wpf.ViewModels
         {
             CreatePlotController();
             DistrictLineChartModel = CreateDistrictLineChartModel(status);
-            StateLineChartModel = CreateStateLineChartModel(status);
+            //StateLineChartModel = CreateStateLineChartModel(status);
+
+            StateWiseHistoricalData = status.Where(x => x.District == District.State)
+                                                    .Where(x => x.Count > 0)
+                                                    .OrderBy(x => x.Date)
+                                                    .Select(x => x).ToList();
+            NotifyOfPropertyChange(nameof(StateWiseHistoricalData));
+
             DailyBarChartModel = CreateDailyColumnGraph(status);
             NotifyOfPropertyChange(nameof(ChartController));
             NotifyOfPropertyChange(nameof(DistrictLineChartModel));

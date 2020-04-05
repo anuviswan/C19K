@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="C19K.Wpf.CustomControls.SingleColumnSeries"
+﻿<UserControl x:Class="C19K.Wpf.CustomControls.LineSeriesChart"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,10 +6,9 @@
              xmlns:local="clr-namespace:C19K.Wpf.CustomControls"
              xmlns:oxy="http://oxyplot.org/wpf"
              mc:Ignorable="d" 
-             Name="ThisControl"
+             Name="LineSeriesChartControl"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <oxy:PlotView Model="{Binding ElementName=ThisControl, Path=CurrentPlotModel, UpdateSourceTrigger=PropertyChanged}" Height="500" Width="500" Background="AliceBlue" />
-        
+        <oxy:PlotView Model="{Binding ElementName=LineSeriesChartControl, Path=CurrentPlotModel, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

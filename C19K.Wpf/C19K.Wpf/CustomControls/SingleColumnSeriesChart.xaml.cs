@@ -21,32 +21,14 @@ using System.Windows.Shapes;
 namespace C19K.Wpf.CustomControls
 {
     /// <summary>
-    /// Interaction logic for SingleColumnSeries.xaml
+    /// Interaction logic for SingleColumnSeriesChart.xaml
     /// </summary>
-    public partial class SingleColumnSeries : UserControl, INotifyPropertyChanged
+    public partial class SingleColumnSeriesChart : UserControl, INotifyPropertyChanged
     {
-        public SingleColumnSeries()
+        public SingleColumnSeriesChart()
         {
             InitializeComponent();
             DataContext = this;
-        }
-
-
-
-        public int MyProperty
-        {
-            get { return (int)GetValue(MyPropertyProperty); }
-            set { SetValue(MyPropertyProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty MyPropertyProperty =
-            DependencyProperty.Register("MyProperty", typeof(int), typeof(SingleColumnSeries), new FrameworkPropertyMetadata(
-            0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,OnNewMemChanged));
-
-        private static void OnNewMemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var instance = d as SingleColumnSeries;
         }
 
         public List<CaseStatus> DataCollection
@@ -55,34 +37,26 @@ namespace C19K.Wpf.CustomControls
             set { SetValue(DataCollectionProperty, value); }
         }
 
-        public string SampleTitle { get; set; } = "sdsadasdasdasdsadasdsad";
-
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<CaseStatus>), typeof(SingleColumnSeries), new PropertyMetadata(Enumerable.Empty<CaseStatus>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
+        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<CaseStatus>), typeof(SingleColumnSeriesChart), new PropertyMetadata(Enumerable.Empty<CaseStatus>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
         private static void OnDataPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var instance = d as SingleColumnSeries;
+            var instance = d as SingleColumnSeriesChart;
             instance.UpdatePlotModel();
         }
 
 
-
+        public event PropertyChangedEventHandler PropertyChanged;
         public void UpdatePlotModel()
         {
-            CurrentPlotModel = CreateDailyColumnGraph();
-            SomeOtherProperty = MyProperty + InternalCount;
-            RaisePropertyChanged(nameof(SomeOtherProperty));
+            CurrentPlotModel = LoadChart();
             RaisePropertyChanged(nameof(CurrentPlotModel));
-            RaisePropertyChanged(nameof(InternalCount));
             CurrentPlotModel?.InvalidatePlot(true);
             UpdateLayout();
         }
-
-
-        public int SomeOtherProperty { get; set; }
 
         public PlotModel CurrentPlotModel { get; set; } = new PlotModel();
         protected void RaisePropertyChanged(string name)
@@ -90,11 +64,12 @@ namespace C19K.Wpf.CustomControls
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
-        private PlotModel CreateDailyColumnGraph()
+        private PlotModel LoadChart()
         {
             if (DataCollection.Count == 0) return default;
+
             if (DataCollection.Select(x => x.District).Distinct().Count() > 1)
-                throw new Exception();
+                throw new Exception("More than one District found");
 
             var model = new PlotModel()
             {
@@ -114,11 +89,7 @@ namespace C19K.Wpf.CustomControls
             s1.ToolTip = "{0}";
             model.Axes.Add(categoryAxis);
             model.Series.Add(s1);
-            InternalCount = DataCollection.Count;
-           
             return model;
         }
-
-        public int InternalCount { get; set; }
     }
 }

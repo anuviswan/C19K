@@ -20,15 +20,15 @@ namespace C19K.Wpf.Service
             }
         }
 
-        public IEnumerable<Status> RetrieveInformation(IEnumerable<Status> statuses)
+        public IEnumerable<CaseStatus> CummiliativeCases(IEnumerable<CaseStatus> statuses)
         {
-            foreach (var groupedDistrict in statuses.GroupBy(x=>x.District))
+            foreach (var groupedDistrict in statuses.GroupBy(x => x.District))
             {
                 var currentCount = 0;
-                foreach (var current in groupedDistrict.ToList().OrderBy(x=>x.Date))
+                foreach (var current in groupedDistrict.ToList().OrderBy(x => x.Date))
                 {
                     currentCount += current.Count;
-                    yield return new Status
+                    yield return new CaseStatus
                     {
                         District = groupedDistrict.Key,
                         Date = current.Date,
@@ -37,5 +37,12 @@ namespace C19K.Wpf.Service
                 }
             }
         }
+
+        public IEnumerable<CaseStatus> DailyCases(IEnumerable<CaseStatus> statuses)
+        {
+            return statuses;
+        }
+
+       
     }
 }

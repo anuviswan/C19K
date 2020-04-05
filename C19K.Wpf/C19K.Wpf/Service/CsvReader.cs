@@ -17,9 +17,9 @@ namespace C19K.Wpf.Service
     {
         private IAppCache cache = new CachingService();
 
-        private Task<IEnumerable<Status>> ReadInternal(string filePath)
+        private Task<IEnumerable<CaseStatus>> ReadInternal(string filePath)
         {
-            var result = new List<Status>();
+            var result = new List<CaseStatus>();
             CultureInfo provider = CultureInfo.InvariantCulture;
 
             using (var reader = new StreamReader(filePath))
@@ -33,7 +33,7 @@ namespace C19K.Wpf.Service
 
                     var valueDictionary = new RouteValueDictionary(item);
 
-                    result.AddRange(Enum.GetNames(typeof(District)).Select(x => new Status
+                    result.AddRange(Enum.GetNames(typeof(District)).Select(x => new CaseStatus
                     {
                         District = (District)Enum.Parse(typeof(District), x),
                         Date = System.DateTime.ParseExact(item.Date, "dd-MM-yyyy", provider),
@@ -43,9 +43,9 @@ namespace C19K.Wpf.Service
                 return Task.FromResult(result.AsEnumerable());
             }
         }
-        public async Task<IEnumerable<Status>> Read(string filePath)
+        public async Task<IEnumerable<CaseStatus>> Read(string filePath)
         {
-            return await cache.GetOrAddAsync<IEnumerable<Status>>(filePath, ()=> ReadInternal(filePath));
+            return await cache.GetOrAddAsync<IEnumerable<CaseStatus>>(filePath, ()=> ReadInternal(filePath));
         }
     }
 

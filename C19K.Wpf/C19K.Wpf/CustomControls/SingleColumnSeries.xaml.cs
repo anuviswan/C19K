@@ -49,16 +49,16 @@ namespace C19K.Wpf.CustomControls
             var instance = d as SingleColumnSeries;
         }
 
-        public List<Status> DataCollection
+        public List<CaseStatus> DataCollection
         {
-            get { return (List<Status>)GetValue(DataCollectionProperty); }
+            get { return (List<CaseStatus>)GetValue(DataCollectionProperty); }
             set { SetValue(DataCollectionProperty, value); }
         }
 
         public string SampleTitle { get; set; } = "sdsadasdasdasdsadasdsad";
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<Status>), typeof(SingleColumnSeries), new PropertyMetadata(Enumerable.Empty<Status>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
+        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<CaseStatus>), typeof(SingleColumnSeries), new PropertyMetadata(Enumerable.Empty<CaseStatus>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
 
         public event PropertyChangedEventHandler PropertyChanged;
 

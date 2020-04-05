@@ -17,8 +17,8 @@ namespace C19K.Wpf.ViewModels
     public class ShellViewModel : Conductor<IReportViewModel>.Collection.OneActive
     {
         private bool showDistrictDetails;
-        private IEnumerable<Status> ActiveCases { get; }
-        private IEnumerable<Status> HistoryCases { get; }
+        private IEnumerable<CaseStatus> ActiveCases { get; }
+        private IEnumerable<CaseStatus> HistoryCases { get; }
 
         public ShellViewModel()
         {

@@ -32,7 +32,7 @@ namespace C19K.Wpf.ViewModels
             DrawGraph(statusRead);
         }
 
-        private PlotModel CreateDistrictLineChartModel(IEnumerable<Status> status)
+        private PlotModel CreateDistrictLineChartModel(IEnumerable<CaseStatus> status)
         {
             var plotModel = CreateBaseModel();
             var colors = typeof(OxyColors)
@@ -64,7 +64,7 @@ namespace C19K.Wpf.ViewModels
             return plotModel;
         }
 
-        private PlotModel CreateStateLineChartModel(IEnumerable<Status> status)
+        private PlotModel CreateStateLineChartModel(IEnumerable<CaseStatus> status)
         {
             var plotModel = CreateBaseModel();
             var lineSeries = new LineSeries
@@ -82,7 +82,7 @@ namespace C19K.Wpf.ViewModels
             plotModel.Series.Add(lineSeries);
             return plotModel;
         }
-        public void DrawGraph(IEnumerable<Status> status)
+        public void DrawGraph(IEnumerable<CaseStatus> status)
         {
             CreatePlotController();
             DistrictLineChartModel = CreateDistrictLineChartModel(status);

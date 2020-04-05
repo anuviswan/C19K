@@ -18,7 +18,7 @@ namespace C19K.Wpf.ViewModels
     [ReportDescriptionAttribute(Description = "Total Cases In Kerala", Title = "Total Cases")]
     public class HistoryCaseReportViewModel:Screen,IReportViewModel<HistoryOfCasesService>
     {
-        private IEnumerable<Status> ActiveCases { get; }
+        private IEnumerable<CaseStatus> ActiveCases { get; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -34,7 +34,7 @@ namespace C19K.Wpf.ViewModels
             DrawGraph(statusRead);
         }
 
-        private PlotModel CreateDistrictLineChartModel(IEnumerable<Status> status)
+        private PlotModel CreateDistrictLineChartModel(IEnumerable<CaseStatus> status)
         {
             var plotModel = CreateBaseLineSeriesPlotModel();
 
@@ -60,7 +60,7 @@ namespace C19K.Wpf.ViewModels
             return plotModel;
         }
 
-        private PlotModel CreateStateLineChartModel(IEnumerable<Status> status)
+        private PlotModel CreateStateLineChartModel(IEnumerable<CaseStatus> status)
         {
             var plotModel = CreateBaseLineSeriesPlotModel();
             
@@ -82,7 +82,7 @@ namespace C19K.Wpf.ViewModels
             plotModel.Series.Add(lineSeries);
             return plotModel;
         }
-        public void DrawGraph(IEnumerable<Status> status)
+        public void DrawGraph(IEnumerable<CaseStatus> status)
         {
             CreatePlotController();
             DistrictLineChartModel = CreateDistrictLineChartModel(status);
@@ -94,7 +94,7 @@ namespace C19K.Wpf.ViewModels
             NotifyOfPropertyChange(nameof(DailyBarChartModel));
         }
 
-        private PlotModel CreateDailyColumnGraph(IEnumerable<Status> status)
+        private PlotModel CreateDailyColumnGraph(IEnumerable<CaseStatus> status)
         {
             var model = new PlotModel()
             {
@@ -112,7 +112,7 @@ namespace C19K.Wpf.ViewModels
             s1.Items.AddRange(dailyCount.Zip(dailyCount.Skip(1),(x,y)=> y-x).Select(x=> new ColumnItem(x)));
 
             var a =  status.Where(x => x.District == District.State).OrderBy(x => x.Date).Select(x => x);
-            DailyStatus = a.Zip(a.Skip(1), (x, y) => new Status { District = x.District, Count = y.Count - x.Count, Date = x.Date }).ToList();
+            DailyStatus = a.Zip(a.Skip(1), (x, y) => new CaseStatus { District = x.District, Count = y.Count - x.Count, Date = x.Date }).ToList();
             Count = 3;
             NotifyOfPropertyChange(nameof(Count));
             NotifyOfPropertyChange(nameof(DailyStatus));
@@ -128,7 +128,7 @@ namespace C19K.Wpf.ViewModels
         public int Count { get; set; }
 
 
-        public List<Status> DailyStatus { get; set; } = new List<Status>();
+        public List<CaseStatus> DailyStatus { get; set; } = new List<CaseStatus>();
         private PlotModel CreateBaseLineSeriesPlotModel()
         {
             var plotModel = new PlotModel();

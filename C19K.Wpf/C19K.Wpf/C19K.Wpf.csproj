@@ -150,7 +150,7 @@
     <Compile Include="Service\GenericC19Service.cs" />
     <Compile Include="Service\CsvReader.cs" />
     <Compile Include="Models\District.cs" />
-    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\CaseStatus.cs" />
     <Compile Include="Service\HistoryOfCasesService.cs" />
     <Compile Include="Service\IC19Service.cs" />
     <Compile Include="Service\IReaderService.cs" />

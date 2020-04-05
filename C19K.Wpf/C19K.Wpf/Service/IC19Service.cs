@@ -9,7 +9,8 @@ namespace C19K.Wpf.Service
 {
     public interface IC19Service
     {
-        IEnumerable<Status> RetrieveInformation(IEnumerable<Status> statuses);
+        IEnumerable<CaseStatus> CummiliativeCases(IEnumerable<CaseStatus> statuses);
+        IEnumerable<CaseStatus> DailyCases(IEnumerable<CaseStatus> statuses);
         string FilePath { get; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace C19K.Wpf.Models
 {
-    public class Status
+    public class CaseStatus
     {
         public DateTime Date { get; set; }
         public District District { get; set; }

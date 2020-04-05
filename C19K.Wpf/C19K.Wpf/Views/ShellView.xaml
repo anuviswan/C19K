@@ -9,6 +9,6 @@
                       xmlns:oxy="http://oxyplot.org/wpf" 
                       Title="ShellView" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
-        <TabControl x:Name="Items"/>
+        <Controls:MetroAnimatedTabControl x:Name="Items"/>
     </Grid>
 </Controls:MetroWindow>

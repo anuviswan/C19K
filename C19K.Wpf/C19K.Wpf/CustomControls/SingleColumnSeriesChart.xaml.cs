@@ -81,14 +81,13 @@ namespace C19K.Wpf.CustomControls
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
             categoryAxis.Labels.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Date.ToString("dd-MMM")));
-            ColumnSeries s1 = new ColumnSeries();
-            var dailyCount = DataCollection.OrderBy(x => x.Date).Select(x => x.Count);
-
-            s1.Items.AddRange(dailyCount.Zip(dailyCount.Skip(1), (x, y) => y - x).Select(x => new ColumnItem(x)));
-            s1.LabelFormatString = "{0}";
-            s1.ToolTip = "{0}";
+            ColumnSeries series = new ColumnSeries();
+            series.Items.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Count).Select(x => new ColumnItem(x)));
+            series.LabelFormatString = "{0}";
+            series.ToolTip = "{0}";
+            series.Title = DataCollection.First().District.ToString();
             model.Axes.Add(categoryAxis);
-            model.Series.Add(s1);
+            model.Series.Add(series);
             return model;
         }
     }

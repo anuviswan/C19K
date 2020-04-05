@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace C19K.Wpf.ViewModels
 {
@@ -62,6 +63,7 @@ namespace C19K.Wpf.ViewModels
         private PlotModel CreateStateLineChartModel(IEnumerable<Status> status)
         {
             var plotModel = CreateBaseLineSeriesPlotModel();
+            
             var lineSeries = new LineSeries
             {
                 ItemsSource = status.Where(x => x.District == District.State)
@@ -73,7 +75,10 @@ namespace C19K.Wpf.ViewModels
                 MarkerSize = 3,
                 MarkerFill = OxyColors.LightBlue,
                 Title = District.State.ToString(),
+                LineJoin = LineJoin.Bevel
+                
             };
+
             plotModel.Series.Add(lineSeries);
             return plotModel;
         }
@@ -91,7 +96,6 @@ namespace C19K.Wpf.ViewModels
 
         private PlotModel CreateDailyColumnGraph(IEnumerable<Status> status)
         {
-            
             var model = new PlotModel()
             {
                 LegendPlacement = LegendPlacement.Outside,

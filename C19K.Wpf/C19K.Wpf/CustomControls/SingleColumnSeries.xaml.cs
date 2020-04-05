@@ -46,7 +46,7 @@ namespace C19K.Wpf.CustomControls
 
         private static void OnNewMemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            var instance = d as SingleColumnSeries;
         }
 
         public List<Status> DataCollection
@@ -73,10 +73,16 @@ namespace C19K.Wpf.CustomControls
         public void UpdatePlotModel()
         {
             CurrentPlotModel = CreateDailyColumnGraph();
-            CurrentPlotModel?.InvalidatePlot(true);
+            SomeOtherProperty = MyProperty + InternalCount;
+            RaisePropertyChanged(nameof(SomeOtherProperty));
             RaisePropertyChanged(nameof(CurrentPlotModel));
             RaisePropertyChanged(nameof(InternalCount));
+            CurrentPlotModel?.InvalidatePlot(true);
+            UpdateLayout();
         }
+
+
+        public int SomeOtherProperty { get; set; }
 
         public PlotModel CurrentPlotModel { get; set; } = new PlotModel();
         protected void RaisePropertyChanged(string name)
@@ -109,7 +115,6 @@ namespace C19K.Wpf.CustomControls
             model.Axes.Add(categoryAxis);
             model.Series.Add(s1);
             InternalCount = DataCollection.Count;
-            
            
             return model;
         }

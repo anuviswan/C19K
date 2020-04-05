@@ -18,8 +18,7 @@ namespace C19K.Wpf.Service
         public async Task<IEnumerable<Status>> Get()
         {
             var fileReader = IoC.Get<IReaderService>();
-            var data = await fileReader.Read(_c19Service.FilePath);
-            return  _c19Service.RetrieveInformation(data);
+            return await fileReader.Read(_c19Service.FilePath);
         }
     }
 }

@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:C19K.Wpf.Views"
              xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:customcontrols="clr-namespace:C19K.Wpf.CustomControls"
              mc:Ignorable="d" 
+             Name="ActiveCasesControl"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -18,12 +20,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <oxy:PlotView Model="{Binding DistrictLineChartModel}" Controller="{Binding ChartController}"/>
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseActiveCases, Mode=TwoWay, ElementName=ActiveCasesControl}" />
         </Border>
 
-        <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <oxy:PlotView  Model="{Binding StateLineChartModel}" Controller="{Binding ChartController}"/>
+        <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideActiveCases, Mode=TwoWay, ElementName=ActiveCasesControl}" />
         </Border>
-       
     </Grid>
 </UserControl>

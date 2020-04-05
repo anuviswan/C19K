@@ -11,14 +11,22 @@ namespace C19K.Wpf.Service
     public class GenericC19Service<T> where T : IC19Service
     {
         private T _c19Service { get; set; }
+        private IReaderService _readerService { get; }
         public GenericC19Service()
         {
             _c19Service = IoC.Get<T>();
+            _readerService = IoC.Get<IReaderService>();
         }
-        public async Task<IEnumerable<CaseStatus>> Get()
+        public async Task<IEnumerable<CaseStatus>> GetCummilativeCases()
         {
-            var fileReader = IoC.Get<IReaderService>();
-            return await fileReader.Read(_c19Service.FilePath);
+            var data = await _readerService.Read(_c19Service.FilePath);
+            return _c19Service.GetCummiliativeCases(data);
+        }
+
+        public async Task<IEnumerable<CaseStatus>> GetDailyCases()
+        {
+            var data = await _readerService.Read(_c19Service.FilePath);
+            return _c19Service.GetDailyCases(data);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace C19K.Wpf.Service
             }
         }
 
-        public IEnumerable<CaseStatus> CummiliativeCases(IEnumerable<CaseStatus> statuses)
+        public IEnumerable<CaseStatus> GetCummiliativeCases(IEnumerable<CaseStatus> statuses)
         {
             foreach (var groupedDistrict in statuses.GroupBy(x => x.District))
             {
@@ -38,7 +38,7 @@ namespace C19K.Wpf.Service
             }
         }
 
-        public IEnumerable<CaseStatus> DailyCases(IEnumerable<CaseStatus> statuses)
+        public IEnumerable<CaseStatus> GetDailyCases(IEnumerable<CaseStatus> statuses)
         {
             return statuses;
         }

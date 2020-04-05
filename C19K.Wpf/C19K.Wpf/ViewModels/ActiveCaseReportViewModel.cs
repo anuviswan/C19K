@@ -28,7 +28,7 @@ namespace C19K.Wpf.ViewModels
         }
         public async Task Reload()
         {
-            var statusRead = await C19Service.Get();
+            var statusRead = await C19Service.GetCummilativeCases();
             DrawGraph(statusRead);
         }
 

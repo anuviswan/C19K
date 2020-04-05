@@ -20,19 +20,15 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <oxy:PlotView Model="{Binding DistrictLineChartModel}" Controller="{Binding ChartController}"/>
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseCummilativeCases, Mode=TwoWay, ElementName=MyControl}" />
         </Border>
 
         <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <oxy:PlotView  Model="{Binding DailyBarChartModel}" />
-        </Border>
-
-        <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.DailyStatus, Mode=TwoWay, ElementName=MyControl}" />
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=MyControl}" />
         </Border>
 
         <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWiseHistoricalData, Mode=TwoWay, ElementName=MyControl}" />
+            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.StateWideDailyCases, Mode=TwoWay, ElementName=MyControl}" />
         </Border>
 
     </Grid>

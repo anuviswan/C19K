@@ -68,22 +68,24 @@ namespace C19K.Wpf.CustomControls
             if (DataCollection== null || DataCollection.Count() == 0) return default;
             var plotModel = CreateBaseLineSeriesPlotModel();
 
-            var lineSeries = new LineSeries
+            foreach (var district in DataCollection.GroupBy(x => x.District)
+                                           .OrderBy(x => x.Key))
             {
-                ItemsSource = DataCollection.Where(x => x.District == District.State)
-                                                    .Where(x => x.Count > 0)
-                                                    .OrderBy(x => x.Date)
-                                                    .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
-                Color = OxyColors.LightBlue,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 3,
-                MarkerFill = OxyColors.LightBlue,
-                Title = District.State.ToString(),
-                LineJoin = LineJoin.Bevel
+                var lineSeries = new LineSeries
+                {
+                    ItemsSource = district.ToList()
+                                          .Where(x => x.Count > 0)
+                                          .OrderBy(x => x.Date)
+                                          .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    Title = district.Key.ToString(),
+                    LineStyle = LineStyle.Solid,
+                    LineJoin = LineJoin.Round
+                };
 
-            };
-
-            plotModel.Series.Add(lineSeries);
+                plotModel.Series.Add(lineSeries);
+            }
             return plotModel;
         }
 

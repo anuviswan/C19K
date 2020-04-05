@@ -21,12 +21,12 @@ namespace C19K.Wpf.Service
             }
         }
 
-        public IEnumerable<CaseStatus> CummiliativeCases(IEnumerable<CaseStatus> statuses)
+        public IEnumerable<CaseStatus> GetCummiliativeCases(IEnumerable<CaseStatus> statuses)
         {
             return statuses;
         }
 
-        public IEnumerable<CaseStatus> DailyCases(IEnumerable<CaseStatus> statuses)
+        public IEnumerable<CaseStatus> GetDailyCases(IEnumerable<CaseStatus> statuses)
         {
             throw new NotImplementedException();
         }

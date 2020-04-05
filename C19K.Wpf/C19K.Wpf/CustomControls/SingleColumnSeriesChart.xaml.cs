@@ -66,7 +66,7 @@ namespace C19K.Wpf.CustomControls
         }
         private PlotModel LoadChart()
         {
-            if (DataCollection.Count == 0) return default;
+            if (DataCollection ==null || DataCollection.Count == 0) return default;
 
             if (DataCollection.Select(x => x.District).Distinct().Count() > 1)
                 throw new Exception("More than one District found");

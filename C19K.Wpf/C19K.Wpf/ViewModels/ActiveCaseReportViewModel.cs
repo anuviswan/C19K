@@ -43,7 +43,7 @@ namespace C19K.Wpf.ViewModels
             var casesRecorded = await C19Service.GetCummilativeCases();
             return casesRecorded.Where(x => x.District == District.State).ToList();
         }
-
+               
         public List<CaseStatus> DistrictWiseActiveCases { get; set; }
         public List<CaseStatus> StateWideActiveCases { get; set; }
         public GenericC19Service<ActiveCaseService> C19Service { get; set; } = new GenericC19Service<ActiveCaseService>();

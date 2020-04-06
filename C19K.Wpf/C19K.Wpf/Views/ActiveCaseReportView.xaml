@@ -20,11 +20,12 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseActiveCases, Mode=TwoWay, ElementName=ActiveCasesControl}" />
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseActiveCases, Mode=TwoWay, ElementName=ActiveCasesControl}" GraphTitle="District Wise Active Cases" />
         </Border>
 
         <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideActiveCases, Mode=TwoWay, ElementName=ActiveCasesControl}" />
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideActiveCases, Mode=TwoWay, ElementName=ActiveCasesControl}" GraphTitle="State Wide Active Cases" />
         </Border>
+
     </Grid>
 </UserControl>

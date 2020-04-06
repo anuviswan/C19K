@@ -30,6 +30,24 @@ namespace C19K.Wpf.CustomControls
             InitializeComponent();
         }
 
+
+
+        public string GraphTitle
+        {
+            get { return (string)GetValue(GraphTitleProperty); }
+            set { SetValue(GraphTitleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for GraphTitle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GraphTitleProperty =
+            DependencyProperty.Register("GraphTitle", typeof(string), typeof(LineSeriesChart), new PropertyMetadata(string.Empty,GraphTitleChanged));
+
+        private static void GraphTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var instance = d as LineSeriesChart;
+            instance.UpdatePlotModel();
+        }
+
         public List<CaseStatus> DataCollection
         {
             get { return (List<CaseStatus>)GetValue(DataCollectionProperty); }
@@ -56,6 +74,11 @@ namespace C19K.Wpf.CustomControls
         public void UpdatePlotModel()
         {
             CurrentPlotModel = LoadChart();
+
+            if (CurrentPlotModel!=null && !string.IsNullOrWhiteSpace(GraphTitle))
+            {
+                CurrentPlotModel.Title = GraphTitle;
+            }
             RaisePropertyChanged(nameof(CurrentPlotModel));
             CurrentPlotModel?.InvalidatePlot(true);
             UpdateLayout();

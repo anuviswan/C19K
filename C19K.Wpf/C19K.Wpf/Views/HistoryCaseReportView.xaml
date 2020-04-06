@@ -20,15 +20,15 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" />
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="District Wise Cummilative Cases" />
         </Border>
 
         <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" />
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="State Wide Cummilative Cases"/>
         </Border>
 
         <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.StateWideDailyCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" />
+            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.StateWideDailyCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="State Wide Daily Cases" />
         </Border>
 
     </Grid>

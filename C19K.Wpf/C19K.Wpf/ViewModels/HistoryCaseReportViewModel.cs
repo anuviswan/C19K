@@ -1,4 +1,5 @@
 ﻿using C19K.Wpf.Attributes;
+using C19K.Wpf.ExtensionMethods;
 using C19K.Wpf.Models;
 using C19K.Wpf.Service;
 using Caliburn.Micro;
@@ -18,9 +19,9 @@ namespace C19K.Wpf.ViewModels
     [ReportDescriptionAttribute(Description = "Total Cases In Kerala", Title = "Total Cases")]
     public class HistoryCaseReportViewModel:Screen,IReportViewModel<HistoryOfCasesService>
     {
-        public List<CaseStatus> DistrictWiseCummilativeCases { get; set; }
-        public List<CaseStatus> StateWideCummilativeCases { get; set; }
-        public List<CaseStatus> StateWideDailyCases { get; set; }
+        public List<GraphRecord> DistrictWiseCummilativeCases { get; set; }
+        public List<GraphRecord> StateWideCummilativeCases { get; set; }
+        public List<GraphRecord> StateWideDailyCases { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -37,22 +38,22 @@ namespace C19K.Wpf.ViewModels
             StateWideDailyCases = await GetStateWideDailyCasesAsync();
         }
 
-        private async Task<List<CaseStatus>> GetStateWideDailyCasesAsync()
+        private async Task<List<GraphRecord>> GetStateWideDailyCasesAsync()
         {
             var casesRecorded = await C19Service.GetDailyCases();
-            return casesRecorded.Where(x => x.District == District.State).ToList();
+            return casesRecorded.Where(x => x.District == District.State).CastAsGraphRecord().ToList();
         }
 
-        private async Task<List<CaseStatus>> GetDistrictWiseCummilativeCasesAsync()
+        private async Task<List<GraphRecord>> GetDistrictWiseCummilativeCasesAsync()
         {
             var casesRecorded = await C19Service.GetCummilativeCases();
-            return casesRecorded.Where(x=>x.District!= District.State).ToList();
+            return casesRecorded.Where(x=>x.District!= District.State).CastAsGraphRecord().ToList();
         }
 
-        private async Task<List<CaseStatus>> GetStateWideCummilativeCasesAsync()
+        private async Task<List<GraphRecord>> GetStateWideCummilativeCasesAsync()
         {
             var casesRecorded = await C19Service.GetCummilativeCases();
-            return casesRecorded.Where(x => x.District == District.State).ToList();
+            return casesRecorded.Where(x => x.District == District.State).CastAsGraphRecord().ToList();
         }
 
         public GenericC19Service<HistoryOfCasesService> C19Service { get; set; } = new GenericC19Service<HistoryOfCasesService>();

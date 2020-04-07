@@ -48,14 +48,14 @@ namespace C19K.Wpf.CustomControls
             instance.UpdatePlotModel();
         }
 
-        public List<CaseStatus> DataCollection
+        public List<GraphRecord> DataCollection
         {
-            get { return (List<CaseStatus>)GetValue(DataCollectionProperty); }
+            get { return (List<GraphRecord>)GetValue(DataCollectionProperty); }
             set { SetValue(DataCollectionProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<CaseStatus>), typeof(LineSeriesChart), new PropertyMetadata(Enumerable.Empty<CaseStatus>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
+        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<GraphRecord>), typeof(LineSeriesChart), new PropertyMetadata(Enumerable.Empty<GraphRecord>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -91,15 +91,15 @@ namespace C19K.Wpf.CustomControls
             if (DataCollection== null || DataCollection.Count() == 0) return default;
             var plotModel = CreateBaseLineSeriesPlotModel();
 
-            foreach (var district in DataCollection.GroupBy(x => x.District)
+            foreach (var district in DataCollection.GroupBy(x => x.Key)
                                            .OrderBy(x => x.Key))
             {
                 var lineSeries = new LineSeries
                 {
                     ItemsSource = district.ToList()
-                                          .Where(x => x.Count > 0)
+                                          .Where(x => x.Value > 0)
                                           .OrderBy(x => x.Date)
-                                          .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Count)),
+                                          .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Value)),
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 3,
                     Title = district.Key.ToString(),

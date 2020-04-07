@@ -1,4 +1,5 @@
 ﻿using C19K.Wpf.Attributes;
+using C19K.Wpf.ExtensionMethods;
 using C19K.Wpf.Models;
 using C19K.Wpf.Service;
 using Caliburn.Micro;
@@ -32,20 +33,20 @@ namespace C19K.Wpf.ViewModels
             StateWideActiveCases = await GetStateWideActiveCases();
         }
 
-        private async Task<List<CaseStatus>> GetDistrictWiseActiveCases()
+        private async Task<List<GraphRecord>> GetDistrictWiseActiveCases()
         {
             var casesRecorded = await C19Service.GetCummilativeCases();
-            return casesRecorded.Where(x => x.District != District.State).ToList();
+            return casesRecorded.Where(x => x.District != District.State).CastAsGraphRecord().ToList();
         }
 
-        private async Task<List<CaseStatus>> GetStateWideActiveCases()
+        private async Task<List<GraphRecord>> GetStateWideActiveCases()
         {
             var casesRecorded = await C19Service.GetCummilativeCases();
-            return casesRecorded.Where(x => x.District == District.State).ToList();
+            return casesRecorded.Where(x => x.District == District.State).CastAsGraphRecord().ToList();
         }
                
-        public List<CaseStatus> DistrictWiseActiveCases { get; set; }
-        public List<CaseStatus> StateWideActiveCases { get; set; }
+        public List<GraphRecord> DistrictWiseActiveCases { get; set; }
+        public List<GraphRecord> StateWideActiveCases { get; set; }
         public GenericC19Service<ActiveCaseService> C19Service { get; set; } = new GenericC19Service<ActiveCaseService>();
     }
 

@@ -47,14 +47,14 @@ namespace C19K.Wpf.CustomControls
             instance.UpdatePlotModel();
         }
 
-        public List<CaseStatus> DataCollection
+        public List<GraphRecord> DataCollection
         {
-            get { return (List<CaseStatus>)GetValue(DataCollectionProperty); }
+            get { return (List<GraphRecord>)GetValue(DataCollectionProperty); }
             set { SetValue(DataCollectionProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<CaseStatus>), typeof(SingleColumnSeriesChart), new PropertyMetadata(Enumerable.Empty<CaseStatus>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
+        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<GraphRecord>), typeof(SingleColumnSeriesChart), new PropertyMetadata(Enumerable.Empty<GraphRecord>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
 
         
 
@@ -88,7 +88,7 @@ namespace C19K.Wpf.CustomControls
         {
             if (DataCollection ==null || DataCollection.Count == 0) return default;
 
-            if (DataCollection.Select(x => x.District).Distinct().Count() > 1)
+            if (DataCollection.Select(x => x.Key).Distinct().Count() > 1)
                 throw new Exception("More than one District found");
 
             var model = new PlotModel()
@@ -96,16 +96,16 @@ namespace C19K.Wpf.CustomControls
                 LegendPlacement = LegendPlacement.Outside,
                 LegendPosition = LegendPosition.BottomCenter,
                 LegendOrientation = LegendOrientation.Horizontal,
-                LegendBorderThickness = 0
+                LegendBorderThickness = 0,
             };
 
-            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom, Angle = -45 };
             categoryAxis.Labels.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Date.ToString("dd-MMM")));
             ColumnSeries series = new ColumnSeries();
-            series.Items.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Count).Select(x => new ColumnItem(x)));
+            series.Items.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Value).Select(x => new ColumnItem(x)));
             series.LabelFormatString = "{0}";
             series.ToolTip = "{0}";
-            series.Title = DataCollection.First().District.ToString();
+            series.Title = DataCollection.First().Key.ToString();
             model.Axes.Add(categoryAxis);
             model.Series.Add(series);
             return model;

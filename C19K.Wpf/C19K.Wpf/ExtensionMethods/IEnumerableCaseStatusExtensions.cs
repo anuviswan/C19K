@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace C19K.Wpf.ExtensionMethods
 {
-    public static class IEnumerableCaseStatus
+    public static class IEnumerableCaseStatusExtensions
     {
         public static IEnumerable<GraphRecord> CastAsGraphRecord(this IEnumerable<CaseStatus> source)
         {

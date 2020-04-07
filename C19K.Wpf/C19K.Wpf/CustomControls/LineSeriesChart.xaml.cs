@@ -1,4 +1,5 @@
-﻿using C19K.Wpf.Models;
+﻿using C19K.Wpf.ExtensionMethods;
+using C19K.Wpf.Models;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -30,6 +31,19 @@ namespace C19K.Wpf.CustomControls
             InitializeComponent();
         }
 
+        private const string LinearAxisKey = "LinearAxisKey";
+        private const string LogarithmicAxisKey = "LogarithmicAxisKey";
+
+        public bool ShowLogarithmicAxis
+        {
+            get { return (bool)GetValue(ShowLogarithmicAxisProperty); }
+            set { SetValue(ShowLogarithmicAxisProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowLogarithmicAxis.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowLogarithmicAxisProperty =
+            DependencyProperty.Register("ShowLogarithmicAxis", typeof(bool), typeof(LineSeriesChart), new PropertyMetadata(false, OnPropertyChanged));
+
 
 
         public string GraphTitle
@@ -40,9 +54,9 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for GraphTitle.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty GraphTitleProperty =
-            DependencyProperty.Register("GraphTitle", typeof(string), typeof(LineSeriesChart), new PropertyMetadata(string.Empty,GraphTitleChanged));
+            DependencyProperty.Register("GraphTitle", typeof(string), typeof(LineSeriesChart), new PropertyMetadata(string.Empty,OnPropertyChanged));
 
-        private static void GraphTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var instance = d as LineSeriesChart;
             instance.UpdatePlotModel();
@@ -55,7 +69,7 @@ namespace C19K.Wpf.CustomControls
         }
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<GraphRecord>), typeof(LineSeriesChart), new PropertyMetadata(Enumerable.Empty<GraphRecord>().ToList(), new PropertyChangedCallback(OnDataPropertyChanged)));
+        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<GraphRecord>), typeof(LineSeriesChart), new PropertyMetadata(Enumerable.Empty<GraphRecord>().ToList(), new PropertyChangedCallback(OnPropertyChanged)));
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -63,12 +77,6 @@ namespace C19K.Wpf.CustomControls
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
-        }
-
-        private static void OnDataPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var instance = d as LineSeriesChart;
-            instance.UpdatePlotModel();
         }
 
         public void UpdatePlotModel()
@@ -90,7 +98,46 @@ namespace C19K.Wpf.CustomControls
         {
             if (DataCollection== null || DataCollection.Count() == 0) return default;
             var plotModel = CreateBaseLineSeriesPlotModel();
+            var linearSeries =  LoadSeries(plotModel);
+            plotModel.Series.AddRange(AssignLinearSeriesAxis(linearSeries));
 
+
+            if (ShowLogarithmicAxis)
+            {
+                var logarithmicAxis = LoadSeries(plotModel);
+                plotModel.Series.AddRange(AssignLogarithmicAxis(logarithmicAxis));
+            }
+            return plotModel;
+        }
+
+        private IEnumerable<LineSeries> AssignLogarithmicAxis(IEnumerable<LineSeries> lineSeries)
+        {
+            foreach (var ls in lineSeries)
+            {
+                if (ShowLogarithmicAxis)
+                {
+                    ls.Title = "Logarithmic Progress";
+                }
+                ls.YAxisKey = LogarithmicAxisKey;
+                yield return ls;
+            }
+        }
+
+        private IEnumerable<LineSeries> AssignLinearSeriesAxis(IEnumerable<LineSeries> lineSeries)
+        {
+            foreach (var ls in lineSeries)
+            {
+                if (ShowLogarithmicAxis)
+                {
+                    ls.Title = "Linear Progress";
+                }
+                ls.YAxisKey = LinearAxisKey;
+                yield return ls;
+            }
+        }
+
+        private IEnumerable<LineSeries> LoadSeries(PlotModel plotModel)
+        {
             foreach (var district in DataCollection.GroupBy(x => x.Key)
                                            .OrderBy(x => x.Key))
             {
@@ -104,12 +151,11 @@ namespace C19K.Wpf.CustomControls
                     MarkerSize = 3,
                     Title = district.Key.ToString(),
                     LineStyle = LineStyle.Solid,
-                    LineJoin = LineJoin.Round
+                    LineJoin = LineJoin.Round,
                 };
 
-                plotModel.Series.Add(lineSeries);
+                yield return lineSeries;
             }
-            return plotModel;
         }
 
         private PlotModel CreateBaseLineSeriesPlotModel()
@@ -131,11 +177,24 @@ namespace C19K.Wpf.CustomControls
                 Position = AxisPosition.Left,
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineColor = OxyColors.LightGray,
+                Key = LinearAxisKey
             };
+
+            if (ShowLogarithmicAxis)
+            {
+                var yAxisLogarithmicAxis = new LogarithmicAxis
+                {
+                    Position = AxisPosition.Right,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MajorGridlineColor = OxyColors.LightGray,
+                    Key = LogarithmicAxisKey,
+                };
+                plotModel.Axes.Add(yAxisLogarithmicAxis);
+            }
 
             plotModel.Axes.Add(xAxis);
             plotModel.Axes.Add(yAxis);
-            plotModel.PlotAreaBorderThickness = new OxyThickness(1, 0, 0, 1);
+            plotModel.PlotAreaBorderThickness = ShowLogarithmicAxis ? new OxyThickness(1, 0, 1, 1): new OxyThickness(1, 0, 0, 1);
             plotModel.LegendPlacement = LegendPlacement.Outside;
             plotModel.LegendBorderThickness = 1;
             plotModel.LegendBorder = OxyColors.Black;

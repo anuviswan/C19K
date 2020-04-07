@@ -153,7 +153,8 @@
     <Compile Include="CustomControls\SingleColumnSeriesChart.xaml.cs">
       <DependentUpon>SingleColumnSeriesChart.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ExtensionMethods\IEnumerableCaseStatus.cs" />
+    <Compile Include="ExtensionMethods\ElementCollectionExtensions.cs" />
+    <Compile Include="ExtensionMethods\IEnumerableCaseStatusExtensions.cs" />
     <Compile Include="Models\GraphRecord.cs" />
     <Compile Include="Service\ActiveCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />

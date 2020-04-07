@@ -24,7 +24,7 @@
         </Border>
 
         <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="State Wide Cummilative Cases"/>
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="State Wide Cummilative Cases" ShowLogarithmicAxis="True"/>
         </Border>
 
         <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Black">

@@ -22,6 +22,8 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> DistrictWiseCummilativeCases { get; set; }
         public List<GraphRecord> StateWideCummilativeCases { get; set; }
         public List<GraphRecord> StateWideDailyCases { get; set; }
+
+        public List<GraphRecord> TopFiveInfectedDistricts { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -36,6 +38,17 @@ namespace C19K.Wpf.ViewModels
             DistrictWiseCummilativeCases = await GetDistrictWiseCummilativeCasesAsync();
             StateWideCummilativeCases = await GetStateWideCummilativeCasesAsync();
             StateWideDailyCases = await GetStateWideDailyCasesAsync();
+            TopFiveInfectedDistricts = await GetTopFiveInfectedDistrictsAsync();
+        }
+
+        private async Task<List<GraphRecord>> GetTopFiveInfectedDistrictsAsync()
+        {
+            var casesRecorded = await C19Service.GetCummilativeCases();
+            return casesRecorded.Where(x => x.District != District.State)
+                .GroupBy(x=>x.District)
+                .Select(x=> new GraphRecord { Date = x.Max(c=>c.Date), Key = x.Key.ToString(), Value = x.OrderByDescending(c=>c.Date).First().Count})
+                .OrderByDescending(x=>x.Value)
+                .ToList();
         }
 
         private async Task<List<GraphRecord>> GetStateWideDailyCasesAsync()

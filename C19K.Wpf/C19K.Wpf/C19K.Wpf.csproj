@@ -153,6 +153,9 @@
     <Compile Include="CustomControls\SingleColumnSeriesChart.xaml.cs">
       <DependentUpon>SingleColumnSeriesChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\StatsChart.xaml.cs">
+      <DependentUpon>StatsChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExtensionMethods\ElementCollectionExtensions.cs" />
     <Compile Include="ExtensionMethods\IEnumerableCaseStatusExtensions.cs" />
     <Compile Include="Models\GraphRecord.cs" />
@@ -216,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\SingleColumnSeriesChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\StatsChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

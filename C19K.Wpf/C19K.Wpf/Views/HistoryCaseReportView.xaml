@@ -31,5 +31,9 @@
             <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.StateWideDailyCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="State Wide Daily Cases" />
         </Border>
 
+        <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
+            <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.TopFiveInfectedDistricts, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="Most Infections" />
+        </Border>
+
     </Grid>
 </UserControl>

@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              Name="HistoricalCasesControl"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -20,22 +20,25 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="District Wise Cummilative Cases" />
+        <Border Grid.Column="0" Grid.Row="0" >
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="District Wise Cummilative Cases" Padding="10,10,10,10"/>
         </Border>
 
-        <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
+        <Border Grid.Column="1" Grid.Row="0" >
             <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             GraphTitle="State Wide Cummilative Cases" SecondaryDataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            SecondaryAxisType="Logarithmic"/>
+                                            SecondaryAxisType="Logarithmic" Padding="10,10,10,10"/>
         </Border>
 
-        <Border Grid.Column="0" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.StateWideDailyCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="State Wide Daily Cases" />
+        <Border Grid.Column="0" Grid.Row="1" >
+            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.StateWideDailyCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                                    GraphTitle="State Wide Daily Cases" Padding="10,10,10,10"/>
         </Border>
 
-        <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.TopFiveInfectedDistricts, Mode=TwoWay, ElementName=HistoricalCasesControl}" GraphTitle="Most Infections" />
+        <Border Grid.Column="1" Grid.Row="1" >
+            <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.TopFiveInfectedDistricts, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                       GraphTitle="Most Infections" Padding="10,10,10,10"/>
         </Border>
 
     </Grid>

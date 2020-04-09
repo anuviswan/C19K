@@ -215,7 +215,6 @@ namespace C19K.Wpf.CustomControls
                 var secondaryAxis = SecondaryAxisType == AxisType.Linear ? CreateLinearAxis() : CreateLogarithmicAxis();
                 plotModel.Axes.Add(secondaryAxis);
             }
-
             plotModel.Axes.Add(xAxis);
             plotModel.Axes.Add(primaryAxis);
             plotModel.PlotAreaBorderThickness = isSecondaryAxisEnabled ? new OxyThickness(1, 0, 1, 1): new OxyThickness(1, 0, 0, 1);

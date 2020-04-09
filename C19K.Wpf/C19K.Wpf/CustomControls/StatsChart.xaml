@@ -8,7 +8,7 @@
              Name="StatsChartControl"
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Margin="10,10,10,10" Background="White">
-        <TextBlock Text="{Binding GraphTitle}" FontSize="18" HorizontalAlignment="Center" FontWeight="Bold" Padding="0,0,0,10"/>
+        <TextBlock Text="{Binding GraphTitle}" FontSize="18" HorizontalAlignment="Center" FontWeight="Bold"  Padding="0,0,0,10"/>
         <ItemsControl ItemsSource="{Binding ElementName=StatsChartControl,Path=DataCollection}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

@@ -9,6 +9,6 @@
              Name="LineSeriesChartControl"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <oxy:PlotView Model="{Binding ElementName=LineSeriesChartControl, Path=CurrentPlotModel, UpdateSourceTrigger=PropertyChanged}"/>
+        <oxy:PlotView Grid.Row="1" Model="{Binding ElementName=LineSeriesChartControl, Path=CurrentPlotModel, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

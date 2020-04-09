@@ -30,7 +30,8 @@ namespace C19K.Wpf
             _unityContainer.RegisterInstance<IEventAggregator>(new EventAggregator(), new ContainerControlledLifetimeManager());
 
             ////Services
-            _unityContainer.RegisterInstance<IReaderService>(new CsvReader(), InstanceLifetime.Singleton);
+            _unityContainer.RegisterInstance<CsvReader>(new CsvReader(), InstanceLifetime.Singleton);
+
             _unityContainer.RegisterInstance<ActiveCaseService>(new ActiveCaseService());
             _unityContainer.RegisterInstance<HistoryOfCasesService>(new HistoryOfCasesService());
 

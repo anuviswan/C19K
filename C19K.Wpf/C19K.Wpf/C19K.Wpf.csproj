@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="ExtensionMethods\ElementCollectionExtensions.cs" />
     <Compile Include="ExtensionMethods\IEnumerableCaseStatusExtensions.cs" />
+    <Compile Include="Models\AxisType.cs" />
     <Compile Include="Models\GraphRecord.cs" />
     <Compile Include="Service\ActiveCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />
@@ -167,6 +168,8 @@
     <Compile Include="Service\HistoryOfCasesService.cs" />
     <Compile Include="Service\IC19Service.cs" />
     <Compile Include="Service\IReaderService.cs" />
+    <Compile Include="Service\TestingDetailsService.cs" />
+    <Compile Include="Service\TestingRecordReader.cs" />
     <Compile Include="ViewModels\ActiveCaseReportViewModel.cs" />
     <Compile Include="ViewModels\HistoryCaseReportViewModel.cs" />
     <Compile Include="ViewModels\IReportViewModel.cs" />

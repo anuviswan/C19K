@@ -100,7 +100,7 @@ namespace C19K.Wpf.CustomControls
                 LegendBorderThickness = 0,
             };
 
-            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom, Angle = -45 };
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom, Angle = -45, GapWidth=0 };
             categoryAxis.Labels.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Date.ToString("dd-MMM")));
             ColumnSeries series = new ColumnSeries();
             series.Items.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Value).Select(x => new ColumnItem(x)));

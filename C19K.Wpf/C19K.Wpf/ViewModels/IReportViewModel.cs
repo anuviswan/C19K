@@ -13,8 +13,4 @@ namespace C19K.Wpf.ViewModels
     {
         Task Reload();
     }
-    public interface IReportViewModel<TService>:IReportViewModel where TService : IC19Service,new()
-    {
-        GenericC19Service<TService> C19Service { get; set; }
-    }
 }

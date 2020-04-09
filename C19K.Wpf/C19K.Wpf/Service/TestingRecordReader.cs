@@ -1,22 +1,24 @@
-﻿using C19K.Wpf.Models;
-using CsvHelper;
-using LazyCache;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Routing;
+using C19K.Wpf.Models;
+using LazyCache;
 
 namespace C19K.Wpf.Service
 {
-    public class CsvReader:IReaderService
+    public class TestingRecordReader : IReaderService
     {
         private IAppCache cache = new CachingService();
-
+        public async Task<IEnumerable<CaseStatus>> Read(string filePath)
+        {
+            var cacheKey = $"{nameof(CsvReader)}-{filePath}";
+            return await cache.GetOrAddAsync<IEnumerable<CaseStatus>>(cacheKey, () => ReadInternal(filePath));
+        }
         private Task<IEnumerable<CaseStatus>> ReadInternal(string filePath)
         {
             var result = new List<CaseStatus>();
@@ -37,17 +39,11 @@ namespace C19K.Wpf.Service
                     {
                         District = (District)Enum.Parse(typeof(District), x),
                         Date = System.DateTime.ParseExact(item.Date, "dd-MM-yyyy", provider),
-                        Count = int.TryParse((string)valueDictionary[x], out var value) ? value : 0
+                        Count = int.TryParse((string)valueDictionary["TotalSamplesTested"], out var value) ? value : 0
                     }));
                 }
                 return Task.FromResult(result.AsEnumerable());
             }
         }
-        public async Task<IEnumerable<CaseStatus>> Read(string filePath)
-        {
-            var cacheKey = $"{nameof(CsvReader)}-{filePath}";
-            return await cache.GetOrAddAsync<IEnumerable<CaseStatus>>(cacheKey, ()=> ReadInternal(filePath));
-        }
     }
-
 }

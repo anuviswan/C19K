@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using C19K.Wpf.Attributes;
 using C19K.Wpf.Models;
+using Caliburn.Micro;
 
 namespace C19K.Wpf.Service
 {
@@ -19,6 +20,8 @@ namespace C19K.Wpf.Service
                 return appSettings["HistoryPath"] ?? throw new Exception("Missing Configuration: File Path");
             }
         }
+
+        public IReaderService Reader => IoC.Get<CsvReader>();
 
         public IEnumerable<CaseStatus> GetCummiliativeCases(IEnumerable<CaseStatus> statuses)
         {
@@ -42,7 +45,6 @@ namespace C19K.Wpf.Service
         {
             return statuses;
         }
-
        
     }
 }

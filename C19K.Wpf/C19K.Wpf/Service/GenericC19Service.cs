@@ -8,14 +8,14 @@ using Caliburn.Micro;
 
 namespace C19K.Wpf.Service
 {
-    public class GenericC19Service<T> where T : IC19Service
+    public class GenericC19Service<TC19Service> where TC19Service : IC19Service
     {
-        private T _c19Service { get; set; }
+        private TC19Service _c19Service { get; set; }
         private IReaderService _readerService { get; }
         public GenericC19Service()
         {
-            _c19Service = IoC.Get<T>();
-            _readerService = IoC.Get<IReaderService>();
+            _c19Service = IoC.Get<TC19Service>();
+            _readerService = _c19Service.Reader;
         }
         public async Task<IEnumerable<CaseStatus>> GetCummilativeCases()
         {

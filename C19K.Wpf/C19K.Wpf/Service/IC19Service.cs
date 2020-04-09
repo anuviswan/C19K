@@ -12,5 +12,6 @@ namespace C19K.Wpf.Service
         IEnumerable<CaseStatus> GetCummiliativeCases(IEnumerable<CaseStatus> statuses);
         IEnumerable<CaseStatus> GetDailyCases(IEnumerable<CaseStatus> statuses);
         string FilePath { get; }
+        IReaderService Reader { get;  }
     }
 }

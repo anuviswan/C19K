@@ -34,6 +34,29 @@ namespace C19K.Wpf.CustomControls
         private const string LinearAxisKey = "LinearAxisKey";
         private const string LogarithmicAxisKey = "LogarithmicAxisKey";
 
+        public AxisType PrimaryAxisType
+        {
+            get { return (AxisType)GetValue(PrimaryAxisTypeProperty); }
+            set { SetValue(PrimaryAxisTypeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PrimaryAxisType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PrimaryAxisTypeProperty =
+            DependencyProperty.Register("PrimaryAxisType", typeof(AxisType), typeof(LineSeriesChart), new PropertyMetadata(AxisType.Linear,OnPropertyChanged));
+
+
+        public AxisType SecondaryAxisType
+        {
+            get { return (AxisType)GetValue(SecondaryAxisTypeProperty); }
+            set { SetValue(SecondaryAxisTypeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SecondaryAxisType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SecondaryAxisTypeProperty =
+            DependencyProperty.Register("SecondaryAxisType", typeof(AxisType), typeof(LineSeriesChart), new PropertyMetadata(AxisType.Linear, OnPropertyChanged));
+
+
+
         public bool ShowLogarithmicAxis
         {
             get { return (bool)GetValue(ShowLogarithmicAxisProperty); }
@@ -43,8 +66,6 @@ namespace C19K.Wpf.CustomControls
         // Using a DependencyProperty as the backing store for ShowLogarithmicAxis.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowLogarithmicAxisProperty =
             DependencyProperty.Register("ShowLogarithmicAxis", typeof(bool), typeof(LineSeriesChart), new PropertyMetadata(false, OnPropertyChanged));
-
-
 
         public string GraphTitle
         {
@@ -69,7 +90,22 @@ namespace C19K.Wpf.CustomControls
         }
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<GraphRecord>), typeof(LineSeriesChart), new PropertyMetadata(Enumerable.Empty<GraphRecord>().ToList(), new PropertyChangedCallback(OnPropertyChanged)));
+        public static readonly DependencyProperty DataCollectionProperty = DependencyProperty.Register("DataCollection", typeof(List<GraphRecord>), 
+            typeof(LineSeriesChart), new PropertyMetadata(null, new PropertyChangedCallback(OnPropertyChanged)));
+
+
+        public List<GraphRecord> SecondaryDataCollection
+        {
+            get { return (List<GraphRecord>)GetValue(SecondaryDataCollectionProperty); }
+            set { SetValue(SecondaryDataCollectionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SecondaryDataCollection.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SecondaryDataCollectionProperty =
+            DependencyProperty.Register("SecondaryDataCollection", typeof(List<GraphRecord>), 
+                typeof(LineSeriesChart), new PropertyMetadata(null, new PropertyChangedCallback(OnPropertyChanged)));
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -78,6 +114,8 @@ namespace C19K.Wpf.CustomControls
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
+
+        private bool IsSecondaryAxisEnabled => SecondaryDataCollection != null;
 
         public void UpdatePlotModel()
         {
@@ -97,46 +135,20 @@ namespace C19K.Wpf.CustomControls
         private PlotModel LoadChart()
         {
             if (DataCollection== null || DataCollection.Count() == 0) return default;
-            var plotModel = CreateBaseLineSeriesPlotModel();
-            var linearSeries =  LoadSeries(plotModel);
-            plotModel.Series.AddRange(AssignLinearSeriesAxis(linearSeries));
+            var plotModel = CreateBaseLineSeriesPlotModel(IsSecondaryAxisEnabled);
+            
+            var primarySeries =  CreatePrimaryAxisSeries();
+            plotModel.Series.AddRange(primarySeries);
 
-
-            if (ShowLogarithmicAxis)
+            if (IsSecondaryAxisEnabled)
             {
-                var logarithmicAxis = LoadSeries(plotModel);
-                plotModel.Series.AddRange(AssignLogarithmicAxis(logarithmicAxis));
+                var secondarySeries = CreateSecondaryAxisSeries();
+                plotModel.Series.AddRange(secondarySeries);
             }
             return plotModel;
         }
 
-        private IEnumerable<LineSeries> AssignLogarithmicAxis(IEnumerable<LineSeries> lineSeries)
-        {
-            foreach (var ls in lineSeries)
-            {
-                if (ShowLogarithmicAxis)
-                {
-                    ls.Title = "Logarithmic Progress";
-                }
-                ls.YAxisKey = LogarithmicAxisKey;
-                yield return ls;
-            }
-        }
-
-        private IEnumerable<LineSeries> AssignLinearSeriesAxis(IEnumerable<LineSeries> lineSeries)
-        {
-            foreach (var ls in lineSeries)
-            {
-                if (ShowLogarithmicAxis)
-                {
-                    ls.Title = "Linear Progress";
-                }
-                ls.YAxisKey = LinearAxisKey;
-                yield return ls;
-            }
-        }
-
-        private IEnumerable<LineSeries> LoadSeries(PlotModel plotModel)
+        private IEnumerable<LineSeries> CreatePrimaryAxisSeries()
         {
             foreach (var district in DataCollection.GroupBy(x => x.Key)
                                            .OrderBy(x => x.Key))
@@ -152,13 +164,37 @@ namespace C19K.Wpf.CustomControls
                     Title = district.Key.ToString(),
                     LineStyle = LineStyle.Solid,
                     LineJoin = LineJoin.Round,
+                    YAxisKey = PrimaryAxisType == AxisType.Linear ? LinearAxisKey : LogarithmicAxisKey
                 };
 
                 yield return lineSeries;
             }
         }
 
-        private PlotModel CreateBaseLineSeriesPlotModel()
+        private IEnumerable<LineSeries> CreateSecondaryAxisSeries()
+        {
+            foreach (var district in SecondaryDataCollection.GroupBy(x => x.Key)
+                                           .OrderBy(x => x.Key))
+            {
+                var lineSeries = new LineSeries
+                {
+                    ItemsSource = district.ToList()
+                                          .Where(x => x.Value > 0)
+                                          .OrderBy(x => x.Date)
+                                          .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Value)),
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    Title = district.Key.ToString(),
+                    LineStyle = LineStyle.Solid,
+                    LineJoin = LineJoin.Round,
+                    YAxisKey = SecondaryAxisType == AxisType.Linear ? LinearAxisKey : LogarithmicAxisKey
+            };
+
+                yield return lineSeries;
+            }
+        }
+
+        private PlotModel CreateBaseLineSeriesPlotModel(bool isSecondaryAxisEnabled = false)
         {
             var plotModel = new PlotModel();
 
@@ -172,33 +208,43 @@ namespace C19K.Wpf.CustomControls
 
             };
 
-            var yAxis = new LinearAxis
+            var primaryAxis = PrimaryAxisType == AxisType.Linear ? CreateLinearAxis() : CreateLogarithmicAxis();
+
+            if (isSecondaryAxisEnabled)
+            {
+                var secondaryAxis = SecondaryAxisType == AxisType.Linear ? CreateLinearAxis() : CreateLogarithmicAxis();
+                plotModel.Axes.Add(secondaryAxis);
+            }
+
+            plotModel.Axes.Add(xAxis);
+            plotModel.Axes.Add(primaryAxis);
+            plotModel.PlotAreaBorderThickness = isSecondaryAxisEnabled ? new OxyThickness(1, 0, 1, 1): new OxyThickness(1, 0, 0, 1);
+            plotModel.LegendPlacement = LegendPlacement.Outside;
+            plotModel.LegendBorderThickness = 1;
+            plotModel.LegendBorder = OxyColors.Black;
+            return plotModel;
+        }
+
+        private Axis CreateLinearAxis()
+        {
+            return new LinearAxis
             {
                 Position = AxisPosition.Left,
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineColor = OxyColors.LightGray,
                 Key = LinearAxisKey
-            };
+            }; 
+        }
 
-            if (ShowLogarithmicAxis)
+        private Axis CreateLogarithmicAxis()
+        {
+            return new LogarithmicAxis
             {
-                var yAxisLogarithmicAxis = new LogarithmicAxis
-                {
-                    Position = AxisPosition.Right,
-                    MajorGridlineStyle = LineStyle.Solid,
-                    MajorGridlineColor = OxyColors.LightGray,
-                    Key = LogarithmicAxisKey,
-                };
-                plotModel.Axes.Add(yAxisLogarithmicAxis);
-            }
-
-            plotModel.Axes.Add(xAxis);
-            plotModel.Axes.Add(yAxis);
-            plotModel.PlotAreaBorderThickness = ShowLogarithmicAxis ? new OxyThickness(1, 0, 1, 1): new OxyThickness(1, 0, 0, 1);
-            plotModel.LegendPlacement = LegendPlacement.Outside;
-            plotModel.LegendBorderThickness = 1;
-            plotModel.LegendBorder = OxyColors.Black;
-            return plotModel;
+                Position = AxisPosition.Right,
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColors.LightGray,
+                Key = LogarithmicAxisKey,
+            }; 
         }
     }
 }

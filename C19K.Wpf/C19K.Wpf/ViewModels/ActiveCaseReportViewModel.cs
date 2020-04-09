@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace C19K.Wpf.ViewModels
 {
     [ReportDescriptionAttribute(Description = "Active Cases In Kerala", Title = "Active Cases")]
-    public class ActiveCaseReportViewModel:Screen,IReportViewModel<ActiveCaseService>
+    public class ActiveCaseReportViewModel:Screen,IReportViewModel
     {
         public ActiveCaseReportViewModel()
         {
@@ -35,19 +35,19 @@ namespace C19K.Wpf.ViewModels
 
         private async Task<List<GraphRecord>> GetDistrictWiseActiveCases()
         {
-            var casesRecorded = await C19Service.GetCummilativeCases();
+            var casesRecorded = await ActiveCasesService.GetCummilativeCases();
             return casesRecorded.Where(x => x.District != District.State).CastAsGraphRecord().ToList();
         }
 
         private async Task<List<GraphRecord>> GetStateWideActiveCases()
         {
-            var casesRecorded = await C19Service.GetCummilativeCases();
+            var casesRecorded = await ActiveCasesService.GetCummilativeCases();
             return casesRecorded.Where(x => x.District == District.State).CastAsGraphRecord().ToList();
         }
                
         public List<GraphRecord> DistrictWiseActiveCases { get; set; }
         public List<GraphRecord> StateWideActiveCases { get; set; }
-        public GenericC19Service<ActiveCaseService> C19Service { get; set; } = new GenericC19Service<ActiveCaseService>();
+        public GenericC19Service<ActiveCaseService> ActiveCasesService { get; set; } = new GenericC19Service<ActiveCaseService>();
     }
 
    

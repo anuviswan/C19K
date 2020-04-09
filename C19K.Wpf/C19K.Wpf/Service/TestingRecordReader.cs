@@ -16,7 +16,7 @@ namespace C19K.Wpf.Service
         private IAppCache cache = new CachingService();
         public async Task<IEnumerable<CaseStatus>> Read(string filePath)
         {
-            var cacheKey = $"{nameof(CsvReader)}-{filePath}";
+            var cacheKey = $"{nameof(TestingRecordReader)}-{filePath}";
             return await cache.GetOrAddAsync<IEnumerable<CaseStatus>>(cacheKey, () => ReadInternal(filePath));
         }
         private Task<IEnumerable<CaseStatus>> ReadInternal(string filePath)

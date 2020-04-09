@@ -102,10 +102,12 @@ namespace C19K.Wpf.CustomControls
 
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom, Angle = -45, GapWidth=0 };
             categoryAxis.Labels.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Date.ToString("dd-MMM")));
+
             ColumnSeries series = new ColumnSeries();
             series.Items.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Value).Select(x => new ColumnItem(x)));
             series.LabelFormatString = "{0}";
             series.ToolTip = "{0}";
+            series.StrokeThickness = 0;
             series.Title = DataCollection.First().Key.ToString();
             model.Axes.Add(categoryAxis);
             model.Series.Add(series);

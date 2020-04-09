@@ -21,9 +21,10 @@ namespace C19K.Wpf.ViewModels
     {
         public List<GraphRecord> DistrictWiseCummilativeCases { get; set; }
         public List<GraphRecord> StateWideCummilativeCases { get; set; }
-        public List<GraphRecord> StateWideDailyCases { get; set; }
-
+        public List<GraphRecord> ConfirmedCasesPerDay { get; set; }
         public List<GraphRecord> TopFiveInfectedDistricts { get; set; }
+
+        public List<GraphRecord> TotalTestsDonePerDay { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -37,8 +38,16 @@ namespace C19K.Wpf.ViewModels
         {
             DistrictWiseCummilativeCases = await GetDistrictWiseCummilativeCasesAsync();
             StateWideCummilativeCases = await GetStateWideCummilativeCasesAsync();
-            StateWideDailyCases = await GetStateWideDailyCasesAsync();
+            ConfirmedCasesPerDay = await GetStateWideDailyCasesAsync();
             TopFiveInfectedDistricts = await GetTopFiveInfectedDistrictsAsync();
+            TotalTestsDonePerDay = await GetTotalCasesDonePerDayAsync();
+        }
+
+        private async Task<List<GraphRecord>> GetTotalCasesDonePerDayAsync()
+        {
+            var casesRecorded = (await TestCasesService.GetCummilativeCases()).ToList();
+            var casesPerDay = new[] { casesRecorded[0] }.Concat(casesRecorded.Zip(casesRecorded.Skip(1), (first, second) => new CaseStatus { Count = second.Count - first.Count, Date = second.Date, District = second.District }));
+            return casesPerDay.CastAsGraphRecord().ToList();
         }
 
         private async Task<List<GraphRecord>> GetTopFiveInfectedDistrictsAsync()
@@ -70,5 +79,6 @@ namespace C19K.Wpf.ViewModels
         }
 
         public GenericC19Service<HistoryOfCasesService> HistoryOfCasesService { get; set; } = new GenericC19Service<HistoryOfCasesService>();
+        public GenericC19Service<TestingDetailsService> TestCasesService { get; set; } = new GenericC19Service<TestingDetailsService>();
     }
 }

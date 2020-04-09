@@ -22,6 +22,6 @@
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-        </ItemsControl>            
+        </ItemsControl>
     </StackPanel>
 </UserControl>

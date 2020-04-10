@@ -32,19 +32,31 @@
         </Border>
 
         <Border Grid.Column="0" Grid.Row="1" >
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.ConfirmedCasesPerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Confirmed Cases Per Day" Padding="10,10,10,10"/>
+            <customcontrols:PieChart DataCollection="{Binding Path=DataContext.DistrictWiseDistributionOfConfirmedCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                       GraphTitle="Infection Distribution" />
+           
         </Border>
-
+        
         <Border Grid.Column="1" Grid.Row="1" >
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.TotalTestsDonePerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Tests Conducted" Padding="10,10,10,10"/>
+            <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.TotalTestsDonePerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Tests Per Day" Padding="10,10,10,10"/>
         </Border>
 
-        <Border Grid.Column="2" Grid.Row="0">
-            <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.TopFiveInfectedDistricts, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                       GraphTitle="Top Infected Districts" />
-        </Border>
+        <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Grid.Column="0" Grid.Row="0">
+                <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.ConfirmedCasesPerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Confirmed Cases Per Day" Padding="10,10,10,10"/>
+            </Border>
+        </Grid>
+
 
     </Grid>
 </UserControl>

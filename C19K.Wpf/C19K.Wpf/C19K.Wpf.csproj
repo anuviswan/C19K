@@ -150,6 +150,9 @@
     <Compile Include="CustomControls\LineSeriesChart.xaml.cs">
       <DependentUpon>LineSeriesChart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\PieChart.xaml.cs">
+      <DependentUpon>PieChart.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\SingleColumnSeriesChart.xaml.cs">
       <DependentUpon>SingleColumnSeriesChart.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="CustomControls\LineSeriesChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\PieChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

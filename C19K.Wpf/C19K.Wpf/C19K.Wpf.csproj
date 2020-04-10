@@ -164,6 +164,7 @@
     <Compile Include="Models\AxisType.cs" />
     <Compile Include="Models\GraphRecord.cs" />
     <Compile Include="Service\ActiveCaseService.cs" />
+    <Compile Include="Service\FatalCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />
     <Compile Include="Service\CsvReader.cs" />
     <Compile Include="Models\District.cs" />

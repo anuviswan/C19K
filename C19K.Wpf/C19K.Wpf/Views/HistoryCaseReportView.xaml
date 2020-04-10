@@ -27,7 +27,7 @@
 
         <Border Grid.Column="1" Grid.Row="0" >
             <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Confirmed Cases(State)" SecondaryDataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Confirmed Cases(Log vs Linear)" SecondaryDataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             SecondaryAxisType="Logarithmic" Padding="10,10,10,10"/>
         </Border>
 
@@ -47,18 +47,27 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Border Grid.Column="0" Grid.Row="0">
-                <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.ConfirmedCasesPerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Confirmed Cases Per Day" Padding="10,10,10,10"/>
+                <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.OverviewStats, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Overview Stats" />
             </Border>
+
             <Border Grid.Column="0" Grid.Row="1">
-                <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.TotalTestsDonePerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Tests Per Day" Padding="10,10,10,10"/>
-            </Border>
-            
-            <Border Grid.Column="0" Grid.Row="2">
                 <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.TestStats, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             GraphTitle="Testing Stats" />
             </Border>
+
+            <Border Grid.Column="0" Grid.Row="2">
+                <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.ConfirmedCasesPerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Confirmed Cases Per Day" Padding="10,10,10,10" ShowLegend="False"/>
+            </Border>
+            <Border Grid.Column="0" Grid.Row="3">
+                <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.TotalTestsDonePerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Tests Per Day" Padding="10,10,10,10" ShowLegend="False"/>
+            </Border>
+            
+
+
+
         </Grid>
 
 

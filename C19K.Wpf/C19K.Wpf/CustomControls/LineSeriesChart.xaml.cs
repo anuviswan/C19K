@@ -34,11 +34,26 @@ namespace C19K.Wpf.CustomControls
         private const string LinearAxisKey = "LinearAxisKey";
         private const string LogarithmicAxisKey = "LogarithmicAxisKey";
 
+
+
+        public bool ShowLegend
+        {
+            get { return (bool)GetValue(ShowLegendProperty); }
+            set { SetValue(ShowLegendProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowLegend.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowLegendProperty =
+            DependencyProperty.Register("ShowLegend", typeof(bool), typeof(LineSeriesChart), new PropertyMetadata(true));
+
+
+
         public AxisType PrimaryAxisType
         {
             get { return (AxisType)GetValue(PrimaryAxisTypeProperty); }
             set { SetValue(PrimaryAxisTypeProperty, value); }
         }
+
 
         // Using a DependencyProperty as the backing store for PrimaryAxisType.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PrimaryAxisTypeProperty =
@@ -161,7 +176,7 @@ namespace C19K.Wpf.CustomControls
                                           .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Value)),
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 3,
-                    Title = district.Key.ToString(),
+                    Title = ShowLegend ? district.Key.ToString() : null,
                     LineStyle = LineStyle.Solid,
                     LineJoin = LineJoin.Round,
                     YAxisKey = PrimaryAxisType == AxisType.Linear ? LinearAxisKey : LogarithmicAxisKey
@@ -184,12 +199,12 @@ namespace C19K.Wpf.CustomControls
                                           .Select(x => new DataPoint(DateTimeAxis.ToDouble(x.Date), x.Value)),
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 3,
-                    Title = district.Key.ToString(),
+                    Title = ShowLegend ? district.Key.ToString():null,
                     LineStyle = LineStyle.Solid,
                     LineJoin = LineJoin.Round,
                     YAxisKey = SecondaryAxisType == AxisType.Linear ? LinearAxisKey : LogarithmicAxisKey
-            };
-
+                };
+                
                 yield return lineSeries;
             }
         }
@@ -218,9 +233,13 @@ namespace C19K.Wpf.CustomControls
             plotModel.Axes.Add(xAxis);
             plotModel.Axes.Add(primaryAxis);
             plotModel.PlotAreaBorderThickness = isSecondaryAxisEnabled ? new OxyThickness(1, 0, 1, 1): new OxyThickness(1, 0, 0, 1);
-            plotModel.LegendPlacement = LegendPlacement.Outside;
-            plotModel.LegendBorderThickness = 1;
-            plotModel.LegendBorder = OxyColors.Black;
+            if(ShowLegend)
+            {
+                plotModel.LegendPlacement = LegendPlacement.Outside;
+                plotModel.LegendBorderThickness = 1;
+                plotModel.LegendBorder = OxyColors.Black;
+            }
+
             return plotModel;
         }
 
@@ -231,7 +250,7 @@ namespace C19K.Wpf.CustomControls
                 Position = AxisPosition.Left,
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineColor = OxyColors.LightGray,
-                Key = LinearAxisKey
+                Key = LinearAxisKey,
             }; 
         }
 

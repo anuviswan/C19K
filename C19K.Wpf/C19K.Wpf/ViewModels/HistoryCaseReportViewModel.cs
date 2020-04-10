@@ -25,6 +25,7 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> DistrictWiseDistributionOfConfirmedCases { get; set; }
         public List<GraphRecord> TotalTestsDonePerDay { get; set; }
         public List<GraphRecord> TestStats { get; set; }
+        public List<GraphRecord> OverviewStats { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -42,6 +43,49 @@ namespace C19K.Wpf.ViewModels
             DistrictWiseDistributionOfConfirmedCases = await GetDistrictWiseDistribution();
             TotalTestsDonePerDay = await GetTotalCasesDonePerDayAsync();
             TestStats = await GetTestStatsAsync();
+            OverviewStats = await GetOverStatsAsync();
+        }
+
+        private async Task<List<GraphRecord>> GetOverStatsAsync()
+        {
+            var activeCasesCummilative = await ActiveCaseService.GetCummilativeCases();
+            var historicalCasesCummilative = await HistoryOfCasesService.GetCummilativeCases();
+            var fatalCaseCummilative = await FatalCaseService.GetCummilativeCases();
+
+            var result = new List<GraphRecord>();
+            var lastAvailableDate = historicalCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Date;
+            var totalConfirmedCases = historicalCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Count;
+            var totalActiveCases = activeCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Count;
+            var totalFatalCases = fatalCaseCummilative.Where(x=>x.District == District.State).Max(x=>x.Count);
+
+            result.Add(new GraphRecord
+            {
+                Date = lastAvailableDate,
+                Key = "Total Confirmed Cases",
+                Value = totalConfirmedCases
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = lastAvailableDate,
+                Key = "Total Active Cases",
+                Value = totalActiveCases
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = lastAvailableDate,
+                Key = "Recovery %",
+                Value = Math.Round(((double)(totalConfirmedCases - (totalFatalCases+totalActiveCases)) / (double)totalConfirmedCases) * 100,2)
+            }) ;
+
+            result.Add(new GraphRecord
+            {
+                Date = lastAvailableDate,
+                Key = "Fatal",
+                Value = totalFatalCases
+            });
+            return result;
         }
 
         private async Task<List<GraphRecord>> GetTestStatsAsync()
@@ -72,6 +116,19 @@ namespace C19K.Wpf.ViewModels
                 Value = casesPerDay.OrderByDescending(x=>x.Date).Take(5).Average(x => x.Count)
             });
 
+            result.Add(new GraphRecord
+            {
+                Date = casesRecorded.Max(x => x.Date),
+                Key = "Max Tests On One Day",
+                Value = casesPerDay.Skip(1).Max(x=>x.Count)
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = casesRecorded.Last().Date,
+                Key = "Tests on Last Day",
+                Value = casesPerDay.Last().Count
+            });
             return result;
         }
 
@@ -111,5 +168,7 @@ namespace C19K.Wpf.ViewModels
 
         public GenericC19Service<HistoryOfCasesService> HistoryOfCasesService { get; set; } = new GenericC19Service<HistoryOfCasesService>();
         public GenericC19Service<TestingDetailsService> TestCasesService { get; set; } = new GenericC19Service<TestingDetailsService>();
+        public GenericC19Service<ActiveCaseService> ActiveCaseService { get; set; } = new GenericC19Service<ActiveCaseService>();
+        public GenericC19Service<FatalCaseService> FatalCaseService { get; set; } = new GenericC19Service<FatalCaseService>();
     }
 }

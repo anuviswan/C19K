@@ -10,6 +10,6 @@ namespace C19K.Wpf.Models
     {
         public DateTime Date { get; set; }
         public string Key { get; set; }
-        public int Value { get; set; }
+        public double Value { get; set; }
     }
 }

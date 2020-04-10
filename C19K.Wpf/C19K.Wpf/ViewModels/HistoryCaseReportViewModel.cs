@@ -23,8 +23,8 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> StateWideCummilativeCases { get; set; }
         public List<GraphRecord> ConfirmedCasesPerDay { get; set; }
         public List<GraphRecord> DistrictWiseDistributionOfConfirmedCases { get; set; }
-
         public List<GraphRecord> TotalTestsDonePerDay { get; set; }
+        public List<GraphRecord> TestStats { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -41,6 +41,38 @@ namespace C19K.Wpf.ViewModels
             ConfirmedCasesPerDay = await GetStateWideDailyCasesAsync();
             DistrictWiseDistributionOfConfirmedCases = await GetDistrictWiseDistribution();
             TotalTestsDonePerDay = await GetTotalCasesDonePerDayAsync();
+            TestStats = await GetTestStatsAsync();
+        }
+
+        private async Task<List<GraphRecord>> GetTestStatsAsync()
+        {
+            const double keralaPopulationInMillion = 36;
+            var casesRecorded = (await TestCasesService.GetCummilativeCases()).ToList();
+            var casesPerDay = new[] { casesRecorded[0] }.Concat(casesRecorded.Zip(casesRecorded.Skip(1), (first, second) => new CaseStatus { Count = second.Count - first.Count, Date = second.Date, District = second.District }));
+            var result = new List<GraphRecord>();
+
+            result.Add(new GraphRecord
+            {
+                Date = casesRecorded.Max(x => x.Date),
+                Key = "Total Tests",
+                Value = casesRecorded.Max(x => x.Count)
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = casesRecorded.Max(x => x.Date),
+                Key = "Tests Per Million",
+                Value = Math.Round(casesRecorded.Max(x => x.Count)/ keralaPopulationInMillion)
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = casesRecorded.Max(x => x.Date),
+                Key = "Av. Tests(Last 5 Days)",
+                Value = casesPerDay.OrderByDescending(x=>x.Date).Take(5).Average(x => x.Count)
+            });
+
+            return result;
         }
 
         private async Task<List<GraphRecord>> GetTotalCasesDonePerDayAsync()

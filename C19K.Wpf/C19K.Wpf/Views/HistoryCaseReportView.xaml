@@ -55,6 +55,10 @@
                 <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.ConfirmedCasesPerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             GraphTitle="Confirmed Cases Per Day" Padding="10,10,10,10"/>
             </Border>
+            <Border Grid.Column="0" Grid.Row="1">
+                <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.TestStats, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Testing Stats" />
+            </Border>
         </Grid>
 
 

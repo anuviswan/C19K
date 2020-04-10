@@ -36,7 +36,9 @@
                                        GraphTitle="Infection Distribution" Padding="10,10,10,10"/>
            
         </Border>
-        
+
+
+
         <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -64,7 +66,11 @@
                 <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.TotalTestsDonePerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             GraphTitle="Tests Per Day" Padding="10,10,10,10" ShowLegend="False"/>
             </Border>
-            
+
+            <Border Grid.Column="0" Grid.Row="4">
+                <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.NumberOfDaysForMajorMilestones, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                       GraphTitle="Grow Rate" Padding="10,10,10,10"/>
+            </Border>
 
 
 

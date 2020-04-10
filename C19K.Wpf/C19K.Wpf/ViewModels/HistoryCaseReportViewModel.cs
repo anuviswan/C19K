@@ -26,6 +26,8 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> TotalTestsDonePerDay { get; set; }
         public List<GraphRecord> TestStats { get; set; }
         public List<GraphRecord> OverviewStats { get; set; }
+
+        public List<GraphRecord> NumberOfDaysForMajorMilestones { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -43,10 +45,54 @@ namespace C19K.Wpf.ViewModels
             DistrictWiseDistributionOfConfirmedCases = await GetDistrictWiseDistribution();
             TotalTestsDonePerDay = await GetTotalCasesDonePerDayAsync();
             TestStats = await GetTestStatsAsync();
-            OverviewStats = await GetOverStatsAsync();
+            OverviewStats = await GetOverviewStatsAsync();
+            NumberOfDaysForMajorMilestones = await GetNumberOfDaysForMajorMilestonesAsync();
         }
 
-        private async Task<List<GraphRecord>> GetOverStatsAsync()
+        private async Task<List<GraphRecord>> GetNumberOfDaysForMajorMilestonesAsync()
+        {
+            var historicalCasesCummilative = (await HistoryOfCasesService.GetCummilativeCases()).Where(x=>x.District == District.State).OrderBy(x=>x.Date);
+            var numberTillFifty = historicalCasesCummilative.TakeWhile(x => x.Count <= 50);
+            var numberFromFiftyToHundred = historicalCasesCummilative.Skip(numberTillFifty.Count()).TakeWhile(x => x.Count <= 100);
+            var numberFromHundredToTwoHundred = historicalCasesCummilative.Skip(numberFromFiftyToHundred.Count()).TakeWhile(x => x.Count <= 200);
+            var numberFromTwoHundredToThreeHundred = historicalCasesCummilative.Skip(numberFromHundredToTwoHundred.Count()).TakeWhile(x => x.Count <= 300);
+            var numberFromThreeHundredToFourHundred = historicalCasesCummilative.Skip(numberFromTwoHundredToThreeHundred.Count()).TakeWhile(x => x.Count <= 300);
+
+            var result = new List<GraphRecord>();
+
+            result.Add(new GraphRecord
+            {
+                Date = numberFromFiftyToHundred.Last().Date,
+                Key = "50-100",
+                Value = numberFromFiftyToHundred.Count()
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = numberFromHundredToTwoHundred.Last().Date,
+                Key = "100-200",
+                Value = numberFromHundredToTwoHundred.Count()
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = numberFromTwoHundredToThreeHundred.Last().Date,
+                Key = "200-300",
+                Value = numberFromTwoHundredToThreeHundred.Count()
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = numberFromThreeHundredToFourHundred.Last().Date,
+                Key = "300-400",
+                Value = numberFromThreeHundredToFourHundred.Count()
+            });
+
+            return result;
+
+        }
+
+        private async Task<List<GraphRecord>> GetOverviewStatsAsync()
         {
             var activeCasesCummilative = await ActiveCaseService.GetCummilativeCases();
             var historicalCasesCummilative = await HistoryOfCasesService.GetCummilativeCases();

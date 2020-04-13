@@ -26,13 +26,14 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> TotalTestsDonePerDay { get; set; }
         public List<GraphRecord> TestStats { get; set; }
         public List<GraphRecord> OverviewStats { get; set; }
-        public double DefaultTileValueFontSize => 32;
-        public double DefaultTileTitleFontSize => 20;
+        public double DefaultTileValueFontSize => 20;
+        public double DefaultTileTitleFontSize => 16;
         public Color DefaultTileForeColor => Colors.White;
         public Color DefaultTitleBackgroundColor => Colors.Blue;
         public List<GraphRecord> NumberOfDaysForMajorMilestones { get; set; }
 
         public TileRecord TotalConfirmedCases { get; set; }
+        public TileRecord TotalActiveCases { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -53,6 +54,7 @@ namespace C19K.Wpf.ViewModels
             OverviewStats = await GetOverviewStatsAsync();
             NumberOfDaysForMajorMilestones = await GetNumberOfDaysForMajorMilestonesAsync();
             TotalConfirmedCases = await GetTotalConfirmedCase();
+            TotalActiveCases = await GetTotalActiveCases();
         }
 
         public async Task<TileRecord> GetTotalConfirmedCase()
@@ -65,9 +67,9 @@ namespace C19K.Wpf.ViewModels
             };
         }
 
-        public async Task<TileRecord> GetActiveCases()
+        public async Task<TileRecord> GetTotalActiveCases()
         {
-            var totalActiveCases = await ActiveCaseService.GetDailyCases();
+            var totalActiveCases = await ActiveCaseService.GetCummilativeCases();
             return new TileRecord
             {
                 Value = totalActiveCases.Where(x => x.District == District.State).OrderByDescending(x => x.Date).First().Count,

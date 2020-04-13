@@ -3,20 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:C19K.Wpf.CustomControls"
+             xmlns:local="clr-namespace:C19K.Wpf.CustomControls" xmlns:converters="clr-namespace:C19K.Wpf.Converters"
              mc:Ignorable="d" 
              x:Name="TileChartControl"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="{Binding ElementName=TileChartControl, Path=DataContext.TileColor,UpdateSourceTrigger=PropertyChanged}" Width="200" Height="200"> 
+    <UserControl.Resources>
+        <converters:ColorToSolidColorBrushValueConverter x:Key="ColorToSolidColorBrushValueConverter"/>
+    </UserControl.Resources>
+    <Grid Background="{Binding ElementName=TileChartControl, Path=DataContext.TileColor,Converter={StaticResource ColorToSolidColorBrushValueConverter},UpdateSourceTrigger=PropertyChanged}" 
+          > 
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor,UpdateSourceTrigger=PropertyChanged}" 
+        <TextBlock Grid.Row="0" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                   Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor,Converter={StaticResource ColorToSolidColorBrushValueConverter},UpdateSourceTrigger=PropertyChanged}" 
                    Text="{Binding ElementName=TileChartControl, Path=DataContext.Data.Value,UpdateSourceTrigger=PropertyChanged}"
                    FontSize="{Binding ElementName=TileChartControl,Path=DataContext.TitleFontSize,UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock Grid.Row="1" Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor,UpdateSourceTrigger=PropertyChanged}" 
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="1" Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor,Converter={StaticResource ColorToSolidColorBrushValueConverter},UpdateSourceTrigger=PropertyChanged}" 
                    Text="{Binding ElementName=TileChartControl, Path=DataContext.Data.Title,UpdateSourceTrigger=PropertyChanged}"
                    FontSize="{Binding ElementName=TileChartControl,Path=DataContext.ValueFontSize,UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>

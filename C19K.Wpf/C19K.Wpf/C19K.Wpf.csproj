@@ -147,6 +147,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes\ReportDescriptionAttribute.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="CustomControls\LineSeriesChart.xaml.cs">
       <DependentUpon>LineSeriesChart.xaml</DependentUpon>
     </Compile>

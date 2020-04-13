@@ -71,7 +71,7 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for TitleFontSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TitleFontSizeProperty =
-            DependencyProperty.Register("TitleFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)8, OnPropertyChanged));
+            DependencyProperty.Register("TitleFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)48, OnPropertyChanged));
 
 
 
@@ -83,7 +83,7 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for ValueFontSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ValueFontSizeProperty =
-            DependencyProperty.Register("ValueFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)12, OnPropertyChanged));
+            DependencyProperty.Register("ValueFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)16, OnPropertyChanged));
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

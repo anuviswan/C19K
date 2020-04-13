@@ -26,8 +26,13 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> TotalTestsDonePerDay { get; set; }
         public List<GraphRecord> TestStats { get; set; }
         public List<GraphRecord> OverviewStats { get; set; }
-
+        public double DefaultTileValueFontSize => 32;
+        public double DefaultTileTitleFontSize => 20;
+        public Color DefaultTileForeColor => Colors.White;
+        public Color DefaultTitleBackgroundColor => Colors.Blue;
         public List<GraphRecord> NumberOfDaysForMajorMilestones { get; set; }
+
+        public TileRecord TotalConfirmedCases { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -47,8 +52,28 @@ namespace C19K.Wpf.ViewModels
             TestStats = await GetTestStatsAsync();
             OverviewStats = await GetOverviewStatsAsync();
             NumberOfDaysForMajorMilestones = await GetNumberOfDaysForMajorMilestonesAsync();
+            TotalConfirmedCases = await GetTotalConfirmedCase();
         }
 
+        public async Task<TileRecord> GetTotalConfirmedCase()
+        {
+            var confirmedTotalCases = await HistoryOfCasesService.GetCummilativeCases();
+            return new TileRecord
+            {
+                Value = confirmedTotalCases.Where(x => x.District == District.State).Max(x => x.Count),
+                Title = "Total Cases"
+            };
+        }
+
+        public async Task<TileRecord> GetActiveCases()
+        {
+            var totalActiveCases = await ActiveCaseService.GetDailyCases();
+            return new TileRecord
+            {
+                Value = totalActiveCases.Where(x => x.District == District.State).OrderByDescending(x => x.Date).First().Count,
+                Title = "Active Cases"
+            };
+        }
         private async Task<List<GraphRecord>> GetNumberOfDaysForMajorMilestonesAsync()
         {
             var historicalCasesCummilative = (await HistoryOfCasesService.GetCummilativeCases()).Where(x=>x.District == District.State).OrderBy(x=>x.Date);

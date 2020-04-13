@@ -7,17 +7,17 @@
              mc:Ignorable="d" 
              x:Name="TileChartControl"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="{Binding ElementName=TileChartControl, Path=DataContext.TileColor}">
+    <Grid Background="{Binding ElementName=TileChartControl, Path=DataContext.TileColor,UpdateSourceTrigger=PropertyChanged}" Width="200" Height="200"> 
         <Grid.RowDefinitions>
-            <RowDefinition/>
             <RowDefinition Height="2*"/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="2" Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor}" 
-                   Text="{Binding ElementName=TileChartControl, Path=DataContext.Value}"/>
+        <TextBlock Grid.Row="0" Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor,UpdateSourceTrigger=PropertyChanged}" 
+                   Text="{Binding ElementName=TileChartControl, Path=DataContext.Data.Value,UpdateSourceTrigger=PropertyChanged}"
+                   FontSize="{Binding ElementName=TileChartControl,Path=DataContext.TitleFontSize,UpdateSourceTrigger=PropertyChanged}"/>
 
-        <TextBlock Grid.Row="3" Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor}" 
-                   Text="{Binding ElementName=TileChartControl, Path=DataContext.Title}"/>
+        <TextBlock Grid.Row="1" Foreground="{Binding ElementName=TileChartControl, Path=DataContext.FontColor,UpdateSourceTrigger=PropertyChanged}" 
+                   Text="{Binding ElementName=TileChartControl, Path=DataContext.Data.Title,UpdateSourceTrigger=PropertyChanged}"
+                   FontSize="{Binding ElementName=TileChartControl,Path=DataContext.ValueFontSize,UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

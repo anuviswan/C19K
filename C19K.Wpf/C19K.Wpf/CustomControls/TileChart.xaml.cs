@@ -1,4 +1,5 @@
-﻿using System;
+﻿using C19K.Wpf.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,31 +24,20 @@ namespace C19K.Wpf.CustomControls
         public TileChart()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
 
 
-        public double Value
+        public TileRecord Data
         {
-            get { return (double)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get { return (TileRecord)GetValue(DataProperty); }
+            set { SetValue(DataProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Value.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(double), typeof(TileChart), new PropertyMetadata(0, OnPropertyChanged));
-
-
-
-        public string Title
-        {
-            get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Title.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(TileChart), new PropertyMetadata(string.Empty, OnPropertyChanged));
+        // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DataProperty =
+            DependencyProperty.Register("Data", typeof(TileRecord), typeof(TileChart), new PropertyMetadata(new TileRecord(), OnPropertyChanged));
 
 
         public Color TileColor
@@ -72,13 +62,34 @@ namespace C19K.Wpf.CustomControls
             DependencyProperty.Register("FontColor", typeof(Color), typeof(TileChart), new PropertyMetadata(Colors.White, OnPropertyChanged));
 
 
+
+        public double TitleFontSize
+        {
+            get { return (double)GetValue(TitleFontSizeProperty); }
+            set { SetValue(TitleFontSizeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TitleFontSize.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TitleFontSizeProperty =
+            DependencyProperty.Register("TitleFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)8, OnPropertyChanged));
+
+
+
+        public double ValueFontSize
+        {
+            get { return (double)GetValue(ValueFontSizeProperty); }
+            set { SetValue(ValueFontSizeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ValueFontSize.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ValueFontSizeProperty =
+            DependencyProperty.Register("ValueFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)12, OnPropertyChanged));
+
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var instance = d as TileChart;
             instance.UpdateLayout();
         }
-
-
 
     }
 }

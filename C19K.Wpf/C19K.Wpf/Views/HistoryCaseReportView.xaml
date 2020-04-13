@@ -37,7 +37,23 @@
            
         </Border>
 
-
+        <Grid Grid.Column="1" Grid.Row="1" Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <customcontrols:TileChart Grid.Column="0" Grid.Row="0"
+                                      Data="{Binding Path=DataContext.TotalConfirmedCases, Mode=TwoWay, ElementName=HistoricalCasesControl}"
+                                      FontColor="{Binding Path=DataContext.DefaultTileForeColor, Mode=TwoWay, ElementName=HistoricalCasesControl}"
+                                      TileColor="{Binding Path=DataContext.DefaultTitleBackgroundColor, Mode=TwoWay, ElementName=HistoricalCasesControl}"
+                                      ValueFontSize="{Binding Path=DataContext.DefaultTileValueFontSize, Mode=TwoWay, ElementName=HistoricalCasesControl}"
+                                      TitleFontSize="{Binding Path=DataContext.DefaultTileTitleFontSize, Mode=TwoWay, ElementName=HistoricalCasesControl}"/>
+        </Grid>
+   
 
         <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
             <Grid.RowDefinitions>

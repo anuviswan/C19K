@@ -166,6 +166,7 @@
     <Compile Include="ExtensionMethods\IEnumerableCaseStatusExtensions.cs" />
     <Compile Include="Models\AxisType.cs" />
     <Compile Include="Models\GraphRecord.cs" />
+    <Compile Include="Models\TileRecord.cs" />
     <Compile Include="Service\ActiveCaseService.cs" />
     <Compile Include="Service\FatalCaseService.cs" />
     <Compile Include="Service\GenericC19Service.cs" />

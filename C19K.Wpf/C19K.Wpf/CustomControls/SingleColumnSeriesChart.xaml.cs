@@ -89,25 +89,27 @@ namespace C19K.Wpf.CustomControls
         {
             if (DataCollection ==null || DataCollection.Count == 0) return default;
 
-            if (DataCollection.Select(x => x.Key).Distinct().Count() > 1)
-                throw new Exception("More than one District found");
-
             var model = new PlotModel()
             {
-                LegendPlacement = LegendPlacement.Outside,
-                LegendPosition = LegendPosition.BottomCenter,
-                LegendOrientation = LegendOrientation.Horizontal,
-                LegendBorderThickness = 0,
+                IsLegendVisible = false
             };
 
-            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom, Angle = -45, GapWidth = 0 };
-            categoryAxis.Labels.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Date.ToString("dd-MMM")));
-            var series = new ColumnSeries();
-            series.Items.AddRange(DataCollection.OrderBy(x => x.Date).Select(x => x.Value).Select(x => new ColumnItem(x)));
-            series.LabelFormatString = "{0}";
-            series.ToolTip = "{0}";
-            series.StrokeThickness = 0;
-            series.Title = DataCollection.First().Key.ToString();
+            var categoryAxis = new CategoryAxis 
+            { 
+                Position = AxisPosition.Bottom, 
+                Angle = -45, 
+                GapWidth = 1,
+            };
+            categoryAxis.Labels.AddRange(DataCollection.Select(x => x.Key));
+            var series = new ColumnSeries 
+            {
+                ToolTip = "{0}",
+                StrokeThickness = 0,
+                Title = DataCollection.First().Key.ToString(),
+                LabelPlacement = LabelPlacement.Inside,
+            };
+            
+            series.Items.AddRange(DataCollection.Select(x => x.Value).Select(x => new ColumnItem(x)));
             model.Axes.Add(categoryAxis);
             model.Series.Add(series);
             return model;

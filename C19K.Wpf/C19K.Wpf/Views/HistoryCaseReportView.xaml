@@ -100,8 +100,8 @@
             </Border>
 
             <Border Grid.Column="0" Grid.Row="3" Grid.RowSpan="2">
-                <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.NumberOfDaysForMajorMilestones, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                       GraphTitle="Progression Rate" Padding="10,10,10,10"/>
+                <customcontrols:SingleColumnSeriesChart DataCollection="{Binding Path=DataContext.NumberOfDaysForMajorMilestones, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                       GraphTitle="Progression Rate" Padding="10"/>
             </Border>
 
 

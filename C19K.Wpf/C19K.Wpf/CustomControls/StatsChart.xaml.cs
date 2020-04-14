@@ -35,7 +35,7 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataCollectionProperty =
-            DependencyProperty.Register("DataCollection", typeof(List<GraphRecord>), typeof(StatsChart), new PropertyMetadata(Enumerable.Empty<GraphRecord>().ToList(), OnPropertyChanged));
+            DependencyProperty.Register(nameof(DataCollection), typeof(List<GraphRecord>), typeof(StatsChart), new PropertyMetadata(Enumerable.Empty<GraphRecord>().ToList(), OnPropertyChanged));
 
         public string GraphTitle
         {
@@ -45,7 +45,7 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for GraphTitle.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty GraphTitleProperty =
-            DependencyProperty.Register("GraphTitle", typeof(string), typeof(StatsChart), new PropertyMetadata(string.Empty, OnPropertyChanged));
+            DependencyProperty.Register(nameof(GraphTitle), typeof(string), typeof(StatsChart), new PropertyMetadata(string.Empty, OnPropertyChanged));
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

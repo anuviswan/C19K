@@ -1,6 +1,7 @@
 ﻿using C19K.Wpf.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace C19K.Wpf.CustomControls
     /// <summary>
     /// Interaction logic for TileChart.xaml
     /// </summary>
-    public partial class TileChart : UserControl
+    public partial class TileChart : UserControl,INotifyPropertyChanged
     {
         public TileChart()
         {
@@ -27,17 +28,16 @@ namespace C19K.Wpf.CustomControls
             DataContext = this;
         }
 
-
-
-        public TileRecord Data
+        public TileRecord DataCollection
         {
-            get { return (TileRecord)GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
+            get { return (TileRecord)GetValue(DataCollectionProperty); }
+            set { SetValue(DataCollectionProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(TileRecord), typeof(TileChart), new PropertyMetadata(new TileRecord(), OnPropertyChanged));
+        public static readonly DependencyProperty DataCollectionProperty =
+            DependencyProperty.Register(nameof(DataCollection), typeof(TileRecord), typeof(TileChart), 
+                new PropertyMetadata(new TileRecord {Value=0,Title=nameof(TileRecord.Title) }, OnPropertyChanged));
 
 
         public Color TileColor
@@ -48,18 +48,18 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for TileColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TileColorProperty =
-            DependencyProperty.Register("TileColor", typeof(Color), typeof(TileChart), new PropertyMetadata(Colors.Red, OnPropertyChanged));
+            DependencyProperty.Register(nameof(TileColor), typeof(Color), typeof(TileChart), new PropertyMetadata(Colors.Red, OnPropertyChanged));
 
 
-        public Color FontColor
+        public Color TextColor
         {
-            get { return (Color)GetValue(FontColorProperty); }
-            set { SetValue(FontColorProperty, value); }
+            get { return (Color)GetValue(TextColorProperty); }
+            set { SetValue(TextColorProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for FontColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty FontColorProperty =
-            DependencyProperty.Register("FontColor", typeof(Color), typeof(TileChart), new PropertyMetadata(Colors.White, OnPropertyChanged));
+        public static readonly DependencyProperty TextColorProperty =
+            DependencyProperty.Register(nameof(TextColor), typeof(Color), typeof(TileChart), new PropertyMetadata(Colors.Black, OnPropertyChanged));
 
 
 
@@ -71,7 +71,7 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for TitleFontSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TitleFontSizeProperty =
-            DependencyProperty.Register("TitleFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)48, OnPropertyChanged));
+            DependencyProperty.Register(nameof(TitleFontSize), typeof(double), typeof(TileChart), new PropertyMetadata((double)48, OnPropertyChanged));
 
 
 
@@ -83,12 +83,30 @@ namespace C19K.Wpf.CustomControls
 
         // Using a DependencyProperty as the backing store for ValueFontSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ValueFontSizeProperty =
-            DependencyProperty.Register("ValueFontSize", typeof(double), typeof(TileChart), new PropertyMetadata((double)16, OnPropertyChanged));
+            DependencyProperty.Register(nameof(ValueFontSize), typeof(double), typeof(TileChart), new PropertyMetadata((double)16, OnPropertyChanged));
 
         private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var instance = d as TileChart;
-            instance.UpdateLayout();
+            instance.UpdateControl();
+        }
+
+        private void UpdateControl()
+        {
+            
+            UpdateLayout();
+            RaisePropertyChanged(nameof(TileColor));
+            RaisePropertyChanged(nameof(ValueFontSize));
+            RaisePropertyChanged(nameof(TextColor));
+            RaisePropertyChanged(nameof(DataCollection));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
 
     }

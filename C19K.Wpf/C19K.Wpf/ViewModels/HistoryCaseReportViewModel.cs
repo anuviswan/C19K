@@ -3,6 +3,7 @@ using C19K.Wpf.ExtensionMethods;
 using C19K.Wpf.Models;
 using C19K.Wpf.Service;
 using Caliburn.Micro;
+using MahApps.Metro;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -26,10 +27,10 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> TotalTestsDonePerDay { get; set; }
         public List<GraphRecord> TestStats { get; set; }
         public List<GraphRecord> OverviewStats { get; set; }
-        public double DefaultTileValueFontSize => 20;
+        public double DefaultTileValueFontSize => 48;
         public double DefaultTileTitleFontSize => 16;
         public Color DefaultTileForeColor => Colors.White;
-        public Color DefaultTitleBackgroundColor => Colors.Blue;
+        public Color DefaultTitleBackgroundColor { get; set; }
         public List<GraphRecord> NumberOfDaysForMajorMilestones { get; set; }
 
         public TileRecord TotalConfirmedCases { get; set; }
@@ -37,6 +38,8 @@ namespace C19K.Wpf.ViewModels
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
+            var brush = (Brush)ThemeManager.GetAccent("Blue").Resources["AccentColorBrush"];
+            DefaultTitleBackgroundColor = ((SolidColorBrush)brush).Color;
         }
 
         protected override async void OnViewAttached(object view, object context)
@@ -55,6 +58,11 @@ namespace C19K.Wpf.ViewModels
             NumberOfDaysForMajorMilestones = await GetNumberOfDaysForMajorMilestonesAsync();
             TotalConfirmedCases = await GetTotalConfirmedCase();
             TotalActiveCases = await GetTotalActiveCases();
+            NotifyOfPropertyChange(nameof(DefaultTitleBackgroundColor));
+            NotifyOfPropertyChange(nameof(DefaultTileForeColor));
+            NotifyOfPropertyChange(nameof(TotalConfirmedCases));
+            NotifyOfPropertyChange(nameof(DefaultTileValueFontSize));
+            NotifyOfPropertyChange(nameof(DefaultTileTitleFontSize));
         }
 
         public async Task<TileRecord> GetTotalConfirmedCase()

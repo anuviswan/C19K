@@ -14,8 +14,8 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding Path=Key}" FontSize="14" FontWeight="ExtraBold" Foreground="Black" HorizontalAlignment="Right" Padding="0,0,5,0" />
                         <TextBlock Grid.Column="1" Text="{Binding Path=Value}" FontSize="14" FontWeight="ExtraBold" Foreground="Gray" Padding="5,0,0,0"/>

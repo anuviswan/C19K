@@ -26,7 +26,6 @@ namespace C19K.Wpf.ViewModels
         public List<GraphRecord> DistrictWiseDistributionOfConfirmedCases { get; set; }
         public List<GraphRecord> TotalTestsDonePerDay { get; set; }
         public List<GraphRecord> TestStats { get; set; }
-        public List<GraphRecord> OverviewStats { get; set; }
         public double DefaultTileValueFontSize => 48;
         public double DefaultTileTitleFontSize => 16;
         public Color DefaultTileForeColor => Colors.White;
@@ -35,6 +34,8 @@ namespace C19K.Wpf.ViewModels
 
         public TileRecord TotalConfirmedCases { get; set; }
         public TileRecord TotalActiveCases { get; set; }
+        public TileRecord TotalFatalCases { get; set; }
+        public TileRecord RecoveryRate { get; set; }
         public HistoryCaseReportViewModel()
         {
             DisplayName = "History";
@@ -54,10 +55,17 @@ namespace C19K.Wpf.ViewModels
             DistrictWiseDistributionOfConfirmedCases = await GetDistrictWiseDistribution();
             TotalTestsDonePerDay = await GetTotalCasesDonePerDayAsync();
             TestStats = await GetTestStatsAsync();
-            OverviewStats = await GetOverviewStatsAsync();
             NumberOfDaysForMajorMilestones = await GetNumberOfDaysForMajorMilestonesAsync();
             TotalConfirmedCases = await GetTotalConfirmedCase();
             TotalActiveCases = await GetTotalActiveCases();
+            TotalFatalCases = await GetTotalFatalCases();
+            RecoveryRate = await GetRecoveryRate();
+
+            RaisePropertyChangedEventForTileProperties();
+        }
+
+        private void RaisePropertyChangedEventForTileProperties()
+        {
             NotifyOfPropertyChange(nameof(DefaultTitleBackgroundColor));
             NotifyOfPropertyChange(nameof(DefaultTileForeColor));
             NotifyOfPropertyChange(nameof(TotalConfirmedCases));
@@ -71,7 +79,7 @@ namespace C19K.Wpf.ViewModels
             return new TileRecord
             {
                 Value = confirmedTotalCases.Where(x => x.District == District.State).Max(x => x.Count),
-                Title = "Total Cases"
+                Title = "Total Confirmed Cases"
             };
         }
 
@@ -81,9 +89,37 @@ namespace C19K.Wpf.ViewModels
             return new TileRecord
             {
                 Value = totalActiveCases.Where(x => x.District == District.State).OrderByDescending(x => x.Date).First().Count,
-                Title = "Active Cases"
+                Title = "Total Active Cases"
             };
         }
+
+        public async Task<TileRecord> GetRecoveryRate()
+        {
+            var activeCasesCummilative = await ActiveCaseService.GetCummilativeCases();
+            var historicalCasesCummilative = await HistoryOfCasesService.GetCummilativeCases();
+            var fatalCaseCummilative = await FatalCaseService.GetCummilativeCases();
+
+            var totalConfirmedCases = historicalCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Count;
+            var totalActiveCases = activeCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Count;
+            var totalFatalCases = fatalCaseCummilative.Where(x => x.District == District.State).Max(x => x.Count);
+
+            return new TileRecord
+            {
+                Title = "Recovery %",
+                Value = Math.Round(((double)(totalConfirmedCases - (totalFatalCases + totalActiveCases)) / (double)totalConfirmedCases) * 100, 2)
+            };
+        }
+
+        public async Task<TileRecord> GetTotalFatalCases()
+        {
+            var totalFatalCases = await FatalCaseService.GetCummilativeCases();
+            return new TileRecord
+            {
+                Value = totalFatalCases.Where(x => x.District == District.State).OrderByDescending(x => x.Date).First().Count,
+                Title = "Total Deaths"
+            };
+        }
+
         private async Task<List<GraphRecord>> GetNumberOfDaysForMajorMilestonesAsync()
         {
             var historicalCasesCummilative = (await HistoryOfCasesService.GetCummilativeCases()).Where(x=>x.District == District.State).OrderBy(x=>x.Date);
@@ -125,48 +161,6 @@ namespace C19K.Wpf.ViewModels
 
             return result;
 
-        }
-
-        private async Task<List<GraphRecord>> GetOverviewStatsAsync()
-        {
-            var activeCasesCummilative = await ActiveCaseService.GetCummilativeCases();
-            var historicalCasesCummilative = await HistoryOfCasesService.GetCummilativeCases();
-            var fatalCaseCummilative = await FatalCaseService.GetCummilativeCases();
-
-            var result = new List<GraphRecord>();
-            var lastAvailableDate = historicalCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Date;
-            var totalConfirmedCases = historicalCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Count;
-            var totalActiveCases = activeCasesCummilative.Where(x => x.District == District.State).OrderBy(x => x.Date).Last().Count;
-            var totalFatalCases = fatalCaseCummilative.Where(x=>x.District == District.State).Max(x=>x.Count);
-
-            result.Add(new GraphRecord
-            {
-                Date = lastAvailableDate,
-                Key = "Total Confirmed Cases",
-                Value = totalConfirmedCases
-            });
-
-            result.Add(new GraphRecord
-            {
-                Date = lastAvailableDate,
-                Key = "Total Active Cases",
-                Value = totalActiveCases
-            });
-
-            result.Add(new GraphRecord
-            {
-                Date = lastAvailableDate,
-                Key = "Recovery %",
-                Value = Math.Round(((double)(totalConfirmedCases - (totalFatalCases+totalActiveCases)) / (double)totalConfirmedCases) * 100,2)
-            }) ;
-
-            result.Add(new GraphRecord
-            {
-                Date = lastAvailableDate,
-                Key = "Fatal",
-                Value = totalFatalCases
-            });
-            return result;
         }
 
         private async Task<List<GraphRecord>> GetTestStatsAsync()

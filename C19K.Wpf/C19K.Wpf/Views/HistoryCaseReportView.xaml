@@ -20,24 +20,8 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Grid.Column="0" Grid.Row="0" >
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Confirmed Cases - District" Padding="10,10,10,10"/>
-        </Border>
 
-        <Border Grid.Column="1" Grid.Row="0" >
-            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Confirmed Cases(Log vs Linear)" SecondaryDataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            SecondaryAxisType="Logarithmic" Padding="10,10,10,10"/>
-        </Border>
-
-        <Border Grid.Column="0" Grid.Row="1" >
-            <customcontrols:PieChart DataCollection="{Binding Path=DataContext.DistrictWiseDistributionOfConfirmedCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                       GraphTitle="Infection Distribution" Padding="10,10,10,10"/>
-           
-        </Border>
-
-        <Grid Grid.Column="1" Grid.Row="1" Background="White" Margin="10,10,10,10">
+        <Grid Grid.Column="0" Grid.Row="0" Background="White" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -57,24 +41,40 @@
                                       TileColor="{Binding Path=DataContext.DefaultTitleBackgroundColor, Mode=OneWay, ElementName=HistoricalCasesControl}"
                                       ValueFontSize="{Binding Path=DataContext.DefaultTileValueFontSize, Mode=OneWay, ElementName=HistoricalCasesControl}"
                                       TitleFontSize="{Binding Path=DataContext.DefaultTileTitleFontSize, Mode=OneWay, ElementName=HistoricalCasesControl}"
-                                      DataCollection="{Binding Path=DataContext.TotalConfirmedCases, Mode=TwoWay, ElementName=HistoricalCasesControl}"
+                                      DataCollection="{Binding Path=DataContext.TotalFatalCases, Mode=TwoWay, ElementName=HistoricalCasesControl}"
                                       TextColor="{Binding Path=DataContext.DefaultTileForeColor, Mode=OneWay, ElementName=HistoricalCasesControl}"/>
 
             <customcontrols:TileChart Grid.Column="1" Grid.Row="0" Padding="10,10,10,10"
                                       TileColor="{Binding Path=DataContext.DefaultTitleBackgroundColor, Mode=OneWay, ElementName=HistoricalCasesControl}"
                                       ValueFontSize="{Binding Path=DataContext.DefaultTileValueFontSize, Mode=OneWay, ElementName=HistoricalCasesControl}"
                                       TitleFontSize="{Binding Path=DataContext.DefaultTileTitleFontSize, Mode=OneWay, ElementName=HistoricalCasesControl}"
-                                      DataCollection="{Binding Path=DataContext.TotalConfirmedCases, Mode=TwoWay, ElementName=HistoricalCasesControl}"
+                                      DataCollection="{Binding Path=DataContext.TotalActiveCases, Mode=TwoWay, ElementName=HistoricalCasesControl}"
                                       TextColor="{Binding Path=DataContext.DefaultTileForeColor, Mode=OneWay, ElementName=HistoricalCasesControl}"/>
 
             <customcontrols:TileChart Grid.Column="1" Grid.Row="1" Padding="10,10,10,10"
                                       TileColor="{Binding Path=DataContext.DefaultTitleBackgroundColor, Mode=OneWay, ElementName=HistoricalCasesControl}"
                                       ValueFontSize="{Binding Path=DataContext.DefaultTileValueFontSize, Mode=OneWay, ElementName=HistoricalCasesControl}"
                                       TitleFontSize="{Binding Path=DataContext.DefaultTileTitleFontSize, Mode=OneWay, ElementName=HistoricalCasesControl}"
-                                      DataCollection="{Binding Path=DataContext.TotalConfirmedCases, Mode=TwoWay, ElementName=HistoricalCasesControl}"
+                                      DataCollection="{Binding Path=DataContext.RecoveryRate, Mode=TwoWay, ElementName=HistoricalCasesControl}"
                                       TextColor="{Binding Path=DataContext.DefaultTileForeColor, Mode=OneWay, ElementName=HistoricalCasesControl}"/>
         </Grid>
-   
+        
+        <Border Grid.Column="0" Grid.Row="1" >
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.DistrictWiseCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Confirmed Cases - District" Padding="10,10,10,10"/>
+        </Border>
+
+        <Border Grid.Column="1" Grid.Row="0" >
+            <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            GraphTitle="Confirmed Cases(Log vs Linear)" SecondaryDataCollection="{Binding Path=DataContext.StateWideCummilativeCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                            SecondaryAxisType="Logarithmic" Padding="10,10,10,10"/>
+        </Border>
+
+        <Border Grid.Column="1" Grid.Row="1" >
+            <customcontrols:PieChart DataCollection="{Binding Path=DataContext.DistrictWiseDistributionOfConfirmedCases, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
+                                       GraphTitle="Infection Distribution" Padding="10,10,10,10"/>
+           
+        </Border>
 
         <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
             <Grid.RowDefinitions>
@@ -86,27 +86,22 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Border Grid.Column="0" Grid.Row="0">
-                <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.OverviewStats, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                            GraphTitle="Overview Stats" />
-            </Border>
-
-            <Border Grid.Column="0" Grid.Row="1">
                 <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.TestStats, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             GraphTitle="Testing Stats" />
             </Border>
 
-            <Border Grid.Column="0" Grid.Row="2">
+            <Border Grid.Column="0" Grid.Row="1">
                 <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.ConfirmedCasesPerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             GraphTitle="Confirmed Cases Per Day" Padding="10,10,10,10" ShowLegend="False"/>
             </Border>
-            <Border Grid.Column="0" Grid.Row="3">
+            <Border Grid.Column="0" Grid.Row="2">
                 <customcontrols:LineSeriesChart DataCollection="{Binding Path=DataContext.TotalTestsDonePerDay, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
                                             GraphTitle="Tests Per Day" Padding="10,10,10,10" ShowLegend="False"/>
             </Border>
 
-            <Border Grid.Column="0" Grid.Row="4">
+            <Border Grid.Column="0" Grid.Row="3" Grid.RowSpan="2">
                 <customcontrols:StatsChart DataCollection="{Binding Path=DataContext.NumberOfDaysForMajorMilestones, Mode=TwoWay, ElementName=HistoricalCasesControl}" 
-                                       GraphTitle="Grow Rate" Padding="10,10,10,10"/>
+                                       GraphTitle="Progression Rate" Padding="10,10,10,10"/>
             </Border>
 
 

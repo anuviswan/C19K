@@ -9,6 +9,15 @@
                       xmlns:oxy="http://oxyplot.org/wpf" 
                       Title="C19 Kerala - Dashboard for Kerala's Fight against Corona" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         <Controls:MetroAnimatedTabControl x:Name="Items"/>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" FontStyle="Italic" Text="Source of Information:Daily Bulletin - Directorate of Health Services, Kerala"/>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" FontStyle="Italic" Text="{Binding LastUpdatedInformation}" />
+        </StackPanel>
     </Grid>
 </Controls:MetroWindow>

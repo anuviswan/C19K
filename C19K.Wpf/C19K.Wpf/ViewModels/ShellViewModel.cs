@@ -42,5 +42,15 @@ namespace C19K.Wpf.ViewModels
             }
         }
 
+        public string LastUpdatedInformation => Task.Run(async () => await GetLastUpdatedInformation()).Result;
+
+        private async Task<string> GetLastUpdatedInformation()
+        {
+            var historicalCasesService = IoC.Get<GenericC19Service<HistoryOfCasesService>>();
+            var lastUpdatedDate = (await historicalCasesService.GetCummilativeCases()).Max(x => x.Date);
+            return $"Last updated on {lastUpdatedDate.ToString("dd MMM,yyyy")}";
+
+        }
+
     }
 }

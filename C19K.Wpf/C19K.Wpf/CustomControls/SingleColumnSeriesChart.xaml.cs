@@ -1,7 +1,9 @@
 ﻿using C19K.Wpf.Models;
+using MahApps.Metro;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using OxyPlot.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -87,26 +89,28 @@ namespace C19K.Wpf.CustomControls
         }
         private PlotModel LoadChart()
         {
-            if (DataCollection ==null || DataCollection.Count == 0) return default;
+            if (DataCollection == null || DataCollection.Count == 0) return default;
 
             var model = new PlotModel()
             {
                 IsLegendVisible = false
             };
 
-            var categoryAxis = new CategoryAxis 
+            var categoryAxis = new OxyPlot.Axes.CategoryAxis
             { 
                 Position = AxisPosition.Bottom, 
                 Angle = -45, 
                 GapWidth = 1,
             };
             categoryAxis.Labels.AddRange(DataCollection.Select(x => x.Key));
-            var series = new ColumnSeries 
+
+            var series = new OxyPlot.Series.ColumnSeries
             {
                 ToolTip = "{0}",
                 StrokeThickness = 0,
                 Title = DataCollection.First().Key.ToString(),
-                LabelPlacement = LabelPlacement.Inside,
+                //LabelPlacement = LabelPlacement.Middle,
+                TextColor = OxyColors.Black,
             };
             
             series.Items.AddRange(DataCollection.Select(x => x.Value).Select(x => new ColumnItem(x)));

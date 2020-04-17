@@ -127,7 +127,7 @@ namespace C19K.Wpf.ViewModels
             var numberFromFiftyToHundred = historicalCasesCummilative.Skip(numberTillFifty.Count()).TakeWhile(x => x.Count <= 100);
             var numberFromHundredToTwoHundred = historicalCasesCummilative.Skip(numberFromFiftyToHundred.Count()).TakeWhile(x => x.Count <= 200);
             var numberFromTwoHundredToThreeHundred = historicalCasesCummilative.Skip(numberFromHundredToTwoHundred.Count()).TakeWhile(x => x.Count <= 300);
-            var numberFromThreeHundredToFourHundred = historicalCasesCummilative.Skip(numberFromTwoHundredToThreeHundred.Count()).TakeWhile(x => x.Count <= 300);
+            var numberFromThreeHundredToFourHundred = historicalCasesCummilative.Skip(numberFromTwoHundredToThreeHundred.Count()).TakeWhile(x => x.Count <= 400);
 
             var result = new List<GraphRecord>();
 

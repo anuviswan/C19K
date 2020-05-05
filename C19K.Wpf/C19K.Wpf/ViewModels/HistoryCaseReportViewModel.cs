@@ -128,6 +128,7 @@ namespace C19K.Wpf.ViewModels
             var numberFromHundredToTwoHundred = historicalCasesCummilative.Skip(numberFromFiftyToHundred.Count()).TakeWhile(x => x.Count <= 200);
             var numberFromTwoHundredToThreeHundred = historicalCasesCummilative.Skip(numberFromHundredToTwoHundred.Count()).TakeWhile(x => x.Count <= 300);
             var numberFromThreeHundredToFourHundred = historicalCasesCummilative.Skip(numberFromTwoHundredToThreeHundred.Count()).TakeWhile(x => x.Count <= 400);
+            var numberFromFourHundredToFiveHundred = historicalCasesCummilative.Skip(numberFromThreeHundredToFourHundred.Count()).TakeWhile(x => x.Count <= 500);
 
             var result = new List<GraphRecord>();
 
@@ -157,6 +158,13 @@ namespace C19K.Wpf.ViewModels
                 Date = numberFromThreeHundredToFourHundred.Last().Date,
                 Key = "300-400",
                 Value = numberFromThreeHundredToFourHundred.Count()
+            });
+
+            result.Add(new GraphRecord
+            {
+                Date = numberFromFourHundredToFiveHundred.Last().Date,
+                Key = "400-500",
+                Value = numberFromFourHundredToFiveHundred.Count()
             });
 
             return result;
